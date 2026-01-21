@@ -26,7 +26,7 @@
 
 ### 1. 安装依赖
 ```bash
-cd /Users/yurong/Desktop/Code/RiskControl/03-cot_inspection/web_app
+cd /Users/yurong/Desktop/Code/RiskControl/03-cot_inspection
 pip install -r requirements.txt
 ```
 

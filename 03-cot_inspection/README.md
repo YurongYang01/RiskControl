@@ -18,19 +18,19 @@ pip install requests
 export API_KEY="your-api-key-here"
 
 # 运行评分工具
-python model_inspection.py data.jsonl
+python -m app.services.model_inspection data.jsonl
 ```
 
 ### 高级用法
 ```bash
 # 指定输出文件
-python model_inspection.py data.jsonl -o scored_data.jsonl
+python -m app.services.model_inspection data.jsonl -o scored_data.jsonl
 
 # 指定API参数
-python model_inspection.py data.jsonl --api-key "your-key" --api-base "https://your-api-endpoint.com" --model "gpt-4"
+python -m app.services.model_inspection data.jsonl --api-key "your-key" --api-base "https://your-api-endpoint.com" --model "gpt-4"
 
 # 控制批处理大小
-python model_inspection.py data.jsonl --batch-size 5
+python -m app.services.model_inspection data.jsonl --batch-size 5
 ```
 
 ## 示例数据格式

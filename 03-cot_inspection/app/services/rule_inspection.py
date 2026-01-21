@@ -7,10 +7,7 @@ import argparse
 from datetime import datetime
 
 # --- 模块路径配置 ---
-current_dir = Path(__file__).parent
-sys.path.append(str(current_dir))
-
-from cot_quality_inspection_rules import RuleBase
+from .rules import RuleBase
 
 
 def process_single_file(file_path: str, output_dir: str):
