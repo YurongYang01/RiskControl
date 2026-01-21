@@ -4,4 +4,4 @@ app = create_app()
 
 if __name__ == '__main__':
     # 允许局域网访问，方便测试
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    app.run(host='0.0.0.0', port=5002, debug=True)
