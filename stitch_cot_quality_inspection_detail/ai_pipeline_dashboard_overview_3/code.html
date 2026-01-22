@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html class="dark" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>金融风控AI系统 - 特征工程热力图分析</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3b82f6",
+                        "navy": {
+                            "50": "#f2f5f9",
+                            "100": "#e1e8f2",
+                            "200": "#c7d5e7",
+                            "300": "#9fb8d7",
+                            "400": "#7194c3",
+                            "500": "#5075ad",
+                            "600": "#3f5d91",
+                            "700": "#334b76",
+                            "800": "#2d4062",
+                            "900": "#1a263d",
+                            "950": "#0f172a",
+                        }
+                    },
+                    fontFamily: {
+                        "display": ["Noto Sans SC", "Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        :root {
+            --sidebar-bg: #0f172a;
+            --main-bg: #111827;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+        }
+        body {
+            font-family: 'Noto Sans SC', 'Manrope', sans-serif;
+        }
+        .data-table-row:hover {
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 10px;
+        }.hm-seq-high { background-color: rgba(30, 64, 175, 0.4); }
+        .hm-seq-med { background-color: rgba(30, 64, 175, 0.2); }
+        .hm-seq-low { background-color: rgba(30, 64, 175, 0.05); }
+        .hm-div-pos-high { background-color: rgba(220, 38, 38, 0.25); }
+        .hm-div-pos-med { background-color: rgba(220, 38, 38, 0.12); }
+        .hm-div-neg-high { background-color: rgba(37, 99, 235, 0.25); }
+        .hm-div-neg-med { background-color: rgba(37, 99, 235, 0.12); }
+        .hm-div-neutral { background-color: rgba(71, 85, 105, 0.1); }
+    </style>
+</head>
+<body class="bg-navy-950 text-slate-100 font-display min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<aside class="w-64 flex-shrink-0 bg-navy-950 border-r border-slate-800 flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary size-10 rounded-lg flex items-center justify-center text-white shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">security</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-bold leading-none tracking-tight">金融风控AI系统</h1>
+<p class="text-slate-500 text-[10px] font-medium uppercase tracking-wider mt-1">Algorithm Analysis</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1 mt-4">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">home</span>
+<span class="text-sm font-medium">首页</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">database</span>
+<span class="text-sm font-medium">数据集管理</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">engineering</span>
+<span class="text-sm font-medium">数据工程</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary group" href="#">
+<span class="material-symbols-outlined text-[22px] fill-1">model_training</span>
+<span class="text-sm font-semibold">特征工程</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">edit_note</span>
+<span class="text-sm font-medium">Prompt设计</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">auto_awesome</span>
+<span class="text-sm font-medium">COT数据合成</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">fact_check</span>
+<span class="text-sm font-medium">COT数据质检</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-800">
+<div class="flex items-center justify-between px-2 text-slate-500">
+<span class="text-[10px] font-bold uppercase tracking-widest">Version 4.2.0</span>
+<span class="material-symbols-outlined text-sm">info</span>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col overflow-hidden bg-navy-950">
+<header class="h-16 flex items-center justify-between px-8 bg-navy-950/80 backdrop-blur-md border-b border-slate-800">
+<div class="flex items-center gap-4">
+<div class="relative w-72">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-lg leading-none">search</span>
+<input class="w-full bg-slate-900 border-slate-800 rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-transparent text-white placeholder:text-slate-600" placeholder="搜索特征或算法评分..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-bold px-2 py-0.5 bg-blue-500/10 text-blue-400 rounded border border-blue-500/20 uppercase">Algorithm Focus</span>
+<span class="text-[10px] font-bold px-2 py-0.5 bg-purple-500/10 text-purple-400 rounded border border-purple-500/20 uppercase">Heatmap Enabled</span>
+</div>
+<button class="bg-primary hover:bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-sm">play_circle</span>
+                    运行分析
+                </button>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto px-8 py-6">
+<nav class="flex items-center gap-2 mb-6">
+<a class="text-xs font-medium text-slate-500 hover:text-primary transition-colors" href="#">首页</a>
+<span class="material-symbols-outlined text-[14px] text-slate-600">chevron_right</span>
+<span class="text-xs font-medium text-white">特征工程</span>
+<span class="material-symbols-outlined text-[14px] text-slate-600">chevron_right</span>
+<span class="text-xs font-medium text-white">热力图分析</span>
+</nav>
+<div class="mb-8 flex justify-between items-end">
+<div>
+<h2 class="text-3xl font-extrabold text-white tracking-tight">特征工程热力图分析</h2>
+<p class="text-slate-400 mt-2 max-w-3xl text-base">通过热力图可视化直观对比各算法指标。IV与随机森林采用顺序色阶，SHAP与Pearson采用离散色阶表示相关方向。</p>
+</div>
+<div class="flex items-center gap-6 p-3 bg-navy-900/40 rounded-lg border border-slate-800">
+<div class="flex items-center gap-2">
+<span class="text-[9px] font-bold text-slate-500 uppercase">顺序色阶 (IV/RF)</span>
+<div class="flex h-2 w-16 rounded overflow-hidden">
+<div class="flex-1 bg-blue-900/20"></div>
+<div class="flex-1 bg-blue-700/40"></div>
+<div class="flex-1 bg-blue-600/70"></div>
+</div>
+</div>
+<div class="flex items-center gap-2 border-l border-slate-800 pl-6">
+<span class="text-[9px] font-bold text-slate-500 uppercase">离散色阶 (SHAP/Pearson)</span>
+<div class="flex h-2 w-24 rounded overflow-hidden">
+<div class="flex-1 bg-blue-600/40"></div>
+<div class="flex-1 bg-slate-700/40"></div>
+<div class="flex-1 bg-red-600/40"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-6 mb-8">
+<div class="bg-navy-900/50 p-5 rounded-xl border border-slate-800 shadow-sm hover:border-blue-500/30 transition-all">
+<div class="flex justify-between items-start mb-2">
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">IV 信息值</p>
+<span class="material-symbols-outlined text-blue-400 text-lg">bar_chart</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-bold text-white">1,284</p>
+<p class="text-xs text-slate-500">已处理特征</p>
+</div>
+<p class="text-[10px] text-blue-400/80 mt-2">高区分度特征 (IV&gt;0.3): <span class="font-bold">156</span></p>
+</div>
+<div class="bg-navy-900/50 p-5 rounded-xl border border-slate-800 shadow-sm hover:border-emerald-500/30 transition-all">
+<div class="flex justify-between items-start mb-2">
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">随机森林得分</p>
+<span class="material-symbols-outlined text-emerald-400 text-lg">account_tree</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-bold text-white">1,284</p>
+<p class="text-xs text-slate-500">已处理特征</p>
+</div>
+<p class="text-[10px] text-emerald-400/80 mt-2">Top 10% 贡献特征已标记</p>
+</div>
+<div class="bg-navy-900/50 p-5 rounded-xl border border-slate-800 shadow-sm hover:border-purple-500/30 transition-all">
+<div class="flex justify-between items-start mb-2">
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">SHAP 解释性</p>
+<span class="material-symbols-outlined text-purple-400 text-lg">insights</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-bold text-white">942</p>
+<p class="text-xs text-slate-500">已处理特征</p>
+</div>
+<p class="text-[10px] text-purple-400/80 mt-2">计算任务进行中 (73%)</p>
+</div>
+<div class="bg-navy-900/50 p-5 rounded-xl border border-slate-800 shadow-sm hover:border-amber-500/30 transition-all">
+<div class="flex justify-between items-start mb-2">
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pearson 相关性</p>
+<span class="material-symbols-outlined text-amber-400 text-lg">grid_view</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-bold text-white">1,284</p>
+<p class="text-xs text-slate-500">已处理特征</p>
+</div>
+<p class="text-[10px] text-amber-400/80 mt-2">发现强相关冗余特征: <span class="font-bold">24</span></p>
+</div>
+</div>
+<div class="bg-navy-900/40 rounded-2xl border border-slate-800 shadow-xl overflow-hidden">
+<div class="flex items-center gap-1 p-2 bg-navy-900/80 border-b border-slate-800">
+<div class="px-4 py-2">
+<span class="text-sm font-bold text-white uppercase tracking-wider">特征多维评分热力图</span>
+</div>
+<div class="flex-1"></div>
+<div class="flex items-center gap-4 px-4">
+<button class="flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-xl">download</span>
+<span class="text-xs font-bold uppercase">导出分析报告</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-slate-800 bg-navy-900/50">
+<th class="px-6 py-4 text-[10px] font-bold uppercase text-slate-500 tracking-wider">特征 ID &amp; 描述</th>
+<th class="px-6 py-4 text-[10px] font-bold uppercase text-slate-500 tracking-wider text-center">IV 值</th>
+<th class="px-6 py-4 text-[10px] font-bold uppercase text-slate-500 tracking-wider text-center">随机森林得分</th>
+<th class="px-6 py-4 text-[10px] font-bold uppercase text-slate-500 tracking-wider text-center">SHAP 贡献度</th>
+<th class="px-6 py-4 text-[10px] font-bold uppercase text-slate-500 tracking-wider text-center">Pearson 相关系数</th>
+<th class="px-6 py-4 text-[10px] font-bold uppercase text-slate-500 tracking-wider text-right">综合决策</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-800">
+<tr class="data-table-row group">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-white">过去6个月逾期次数</span>
+<span class="font-mono text-[10px] text-slate-500">F_CR_0192 | 信用历史</span>
+</div>
+</td>
+<td class="px-6 py-4 text-center hm-seq-high">
+<span class="text-sm font-mono text-blue-400 font-bold">0.452</span>
+<div class="text-[9px] text-blue-300/60">极高区分度</div>
+</td>
+<td class="px-6 py-4 text-center hm-seq-high">
+<span class="text-sm font-mono text-emerald-400 font-bold">0.184</span>
+<div class="text-[9px] text-emerald-300/60">排名: 4/1284</div>
+</td>
+<td class="px-6 py-4 text-center hm-div-pos-high">
+<span class="text-sm font-mono text-rose-400 font-bold">+0.082</span>
+<div class="text-[9px] text-rose-300/60">强正向关联</div>
+</td>
+<td class="px-6 py-4 text-center hm-div-neutral">
+<span class="text-sm font-mono text-slate-400">0.12</span>
+<div class="text-[9px] text-slate-500">低共线性</div>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-500/10 text-green-500 border border-green-500/20">入选</span>
+</td>
+</tr>
+<tr class="data-table-row group">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-white">平均还款间隔天数</span>
+<span class="font-mono text-[10px] text-slate-500">F_PY_0083 | 还款行为</span>
+</div>
+</td>
+<td class="px-6 py-4 text-center hm-seq-med">
+<span class="text-sm font-mono text-blue-400">0.281</span>
+<div class="text-[9px] text-slate-400">显著区分度</div>
+</td>
+<td class="px-6 py-4 text-center hm-seq-med">
+<span class="text-sm font-mono text-emerald-400">0.092</span>
+<div class="text-[9px] text-slate-400">排名: 28/1284</div>
+</td>
+<td class="px-6 py-4 text-center hm-div-neg-med">
+<span class="text-sm font-mono text-blue-400">-0.041</span>
+<div class="text-[9px] text-blue-300/60">负向关联</div>
+</td>
+<td class="px-6 py-4 text-center hm-div-pos-med">
+<span class="text-sm font-mono text-rose-400">0.68</span>
+<div class="text-[9px] text-slate-400">中等相关</div>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-500/10 text-green-500 border border-green-500/20">入选</span>
+</td>
+</tr>
+<tr class="data-table-row group">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-white">所在行业风险指数</span>
+<span class="font-mono text-[10px] text-slate-500">F_BS_0012 | 基本属性</span>
+</div>
+</td>
+<td class="px-6 py-4 text-center hm-seq-low">
+<span class="text-sm font-mono text-slate-500">0.084</span>
+<div class="text-[9px] text-slate-600">低区分度</div>
+</td>
+<td class="px-6 py-4 text-center hm-seq-low">
+<span class="text-sm font-mono text-slate-500">0.012</span>
+<div class="text-[9px] text-slate-600">排名: 412/1284</div>
+</td>
+<td class="px-6 py-4 text-center hm-div-neutral">
+<span class="text-sm font-mono text-slate-500">0.000</span>
+<div class="text-[9px] text-slate-600">无显著影响</div>
+</td>
+<td class="px-6 py-4 text-center hm-div-neutral">
+<span class="text-sm font-mono text-slate-400">0.05</span>
+<div class="text-[9px] text-slate-600">独立性强</div>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-500/10 text-slate-500 border border-slate-500/20">剔除</span>
+</td>
+</tr>
+<tr class="data-table-row group">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-white">近3月查询征信次数</span>
+<span class="font-mono text-[10px] text-slate-500">F_CR_0210 | 信用历史</span>
+</div>
+</td>
+<td class="px-6 py-4 text-center hm-seq-high">
+<span class="text-sm font-mono text-blue-400 font-bold">0.315</span>
+<div class="text-[9px] text-blue-300/60">高区分度</div>
+</td>
+<td class="px-6 py-4 text-center hm-seq-med">
+<span class="text-sm font-mono text-emerald-400">0.105</span>
+<div class="text-[9px] text-slate-400">排名: 15/1284</div>
+</td>
+<td class="px-6 py-4 text-center hm-div-pos-med">
+<span class="text-sm font-mono text-rose-400">+0.063</span>
+<div class="text-[9px] text-slate-400">正向关联</div>
+</td>
+<td class="px-6 py-4 text-center hm-div-pos-high">
+<span class="text-sm font-mono text-rose-500 font-bold">0.91</span>
+<div class="text-[9px] text-rose-300/80 font-bold">高共线性风险</div>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-500 border border-amber-500/20">待定</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 border-t border-slate-800 bg-navy-900/50 flex items-center justify-between">
+<p class="text-[11px] text-slate-500 font-bold uppercase tracking-wider">显示 1 - 4 / 共 1,284 条特征算法热力分析</p>
+<div class="flex items-center gap-2">
+<button class="px-4 py-1.5 text-xs font-bold border border-slate-800 rounded bg-navy-900 text-slate-500 hover:bg-slate-800 hover:text-white transition-all disabled:opacity-30 disabled:pointer-events-none" disabled="">上一页</button>
+<div class="flex gap-1">
+<button class="size-7 flex items-center justify-center text-xs font-bold bg-primary text-white rounded">1</button>
+<button class="size-7 flex items-center justify-center text-xs font-bold text-slate-400 hover:bg-slate-800 rounded transition-colors">2</button>
+<button class="size-7 flex items-center justify-center text-xs font-bold text-slate-400 hover:bg-slate-800 rounded transition-colors">3</button>
+</div>
+<button class="px-4 py-1.5 text-xs font-bold border border-slate-800 rounded bg-navy-900 text-slate-400 hover:bg-slate-800 hover:text-white transition-all">下一页</button>
+</div>
+</div>
+</div>
+</div>
+<footer class="mt-auto border-t border-slate-800 bg-navy-950 px-8 py-4">
+<div class="flex items-center justify-between text-[11px] font-bold uppercase tracking-widest text-slate-600">
+<div class="flex gap-8">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-emerald-500 animate-pulse"></div>
+<span>计算引擎: SPARK-CLUSTER-PROD (已就绪)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs">analytics</span>
+<span>算法包版本: scikit-learn v1.3.0 / shap v0.42.1</span>
+</div>
+</div>
+<div>
+<span>最近全量分析时间: 2023-11-24 14:20:00 (UTC+8)</span>
+</div>
+</div>
+</footer>
+</main>
+</div>
+
+</body></html>

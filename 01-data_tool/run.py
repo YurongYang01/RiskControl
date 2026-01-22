@@ -66,9 +66,9 @@ def run_model():
     try:
         # 运行PU_bagging.py脚本
         result = subprocess.run([
-            "venv/Scripts/python.exe",
+            sys.executable,
             "core/PU_bagging.py"
-        ], capture_output=True, text=True, cwd="d:/code/P1")
+        ], capture_output=True, text=True, cwd=os.getcwd())
         
         if result.returncode == 0:
             # 读取预测结果
@@ -188,9 +188,9 @@ def run_model_feature_selection():
     try:
         # 运行ensemble_feature_selection.py脚本
         result = subprocess.run([
-            "venv/Scripts/python.exe",
+            sys.executable,
             "core/ensemble_feature_selection.py"
-        ], capture_output=True, text=True, cwd="d:/code/P1")
+        ], capture_output=True, text=True, cwd=os.getcwd())
         
         if result.returncode == 0:
             # 检查结果文件是否生成
@@ -237,8 +237,9 @@ def get_results_data():
         return jsonify({'error': '结果文件未找到'}), 404
 
 if __name__ == '__main__':
+    port = 5005
     print("启动PULearning系统...")
-    print("访问地址: http://localhost:5000")
-    print("PU Bagging模块地址: http://localhost:5000/pu_bagging")
-    print("集成特征选择模块地址: http://localhost:5000/ensemble_feature_selection")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    print(f"访问地址: http://localhost:{port}")
+    print(f"PU Bagging模块地址: http://localhost:{port}/pu_bagging")
+    print(f"集成特征选择模块地址: http://localhost:{port}/ensemble_feature_selection")
+    app.run(debug=True, host='0.0.0.0', port=port)
