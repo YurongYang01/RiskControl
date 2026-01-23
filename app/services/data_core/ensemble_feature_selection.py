@@ -12,11 +12,11 @@ plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
 
 # 创建输出目录
-output_dir = 'feature_selection_results'
+output_dir = 'data/results/feature_selection'
 os.makedirs(output_dir, exist_ok=True)
 
 # 读取特征映射，获取中文特征名
-def load_feature_mapping(feature_file='全部特征.txt'):
+def load_feature_mapping(feature_file='config/全部特征.txt'):
     """从特征文件中加载英文特征名到中文特征名的映射"""
     print(f"\n读取特征映射文件: {feature_file}")
     
@@ -56,8 +56,8 @@ def get_chinese_feature_name(feature_name, feature_map):
 # 1. 读取数据
 def load_data():
     print("读取数据...")
-    train_df = pd.read_csv('train.csv')
-    pu_predictions = pd.read_csv('result/pu_eval_output/pu_predictions.csv')
+    train_df = pd.read_csv('data/train.csv')
+    pu_predictions = pd.read_csv('data/results/pu_learning/pu_predictions.csv')
     return train_df, pu_predictions
 
 # 2. 数据预处理

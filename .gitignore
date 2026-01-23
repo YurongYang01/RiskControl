@@ -3,3 +3,8 @@
 /inference_opt.log
 /results
 /uploads
+/data/results
+/data/uploads
+/logs
+__pycache__/
+*.pyc

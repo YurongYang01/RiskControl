@@ -18,6 +18,7 @@ class BaggingPULeaning:
         self.random_seed = random_seed
         self.models = []
         self.feature_names = []
+        self.feature_importance_df = None
 
     def fit(self, X_p, X_u, y_p, y_u):
         self.feature_names = X_p.columns.tolist()
@@ -25,6 +26,8 @@ class BaggingPULeaning:
         n_u_sample = int(n_p * self.imbalance_ratio)  # 按比例采样未标记样本
         print("开始训练 Bagging PU 模型（共{}个子模型）".format(self.n_estimators))
         print("Positive 样本数: {}, 每次迭代Unlabeled采样数: {}".format(n_p, n_u_sample))
+
+        importances = np.zeros(len(self.feature_names))
 
         for i in range(self.n_estimators):
             # 数据采样优化：随机种子随迭代变化，有放回采样（样本量小时）
@@ -56,9 +59,26 @@ class BaggingPULeaning:
             dtrain = lgb.Dataset(X_train, label=y_train)
             model = lgb.train(params, dtrain, num_boost_round=1200)  # 迭代轮数提升至1200
             self.models.append(model)
+            
+            # 累加特征重要性 (split gain)
+            importances += model.feature_importance(importance_type='gain')
 
             if (i + 1) % 10 == 0:
                 print(f"已完成 {i + 1}/{self.n_estimators} 个模型")
+        
+        # 计算平均特征重要性
+        importances /= self.n_estimators
+        self.feature_importance_df = pd.DataFrame({
+            'feature': self.feature_names,
+            'importance': importances
+        }).sort_values(by='importance', ascending=False)
+
+    def get_feature_importance(self):
+        """获取特征重要性"""
+        if self.feature_importance_df is None:
+            raise ValueError("模型未训练，请先调用fit()方法")
+        return self.feature_importance_df
+
 
     def predict_proba(self, X):
         """
@@ -243,7 +263,7 @@ def detect_column_types(df, sample_threshold=0.3):
     print('numeric len:' + str(len(results['numeric'])))
     print('date len:' + str(len(results['date'])))
 
-    with open('./pu_config.json', 'w', encoding='utf-8') as f:
+    with open('config/pu_config.json', 'w', encoding='utf-8') as f:
         json.dump(results, f, ensure_ascii=False, indent=4)
 
     return results
@@ -361,6 +381,12 @@ if __name__ == "__main__":
     processed_df1['违约风险概率'] = risk_proba
 
     # 保存预测结果
-    os.makedirs('result/pu_eval_output', exist_ok=True)
-    processed_df1.to_csv('result/pu_eval_output/pu_predictions.csv', index=False)
-    print("预测结果已保存到: result/pu_eval_output/pu_predictions.csv")
+    output_dir = 'data/results/pu_learning'
+    os.makedirs(output_dir, exist_ok=True)
+    processed_df1.to_csv(f'{output_dir}/pu_predictions.csv', index=False)
+    print(f"预测结果已保存到: {output_dir}/pu_predictions.csv")
+    
+    # 保存特征重要性
+    feature_importance = pu_model.get_feature_importance()
+    feature_importance.to_csv(f'{output_dir}/feature_importance.csv', index=False)
+    print(f"特征重要性已保存到: {output_dir}/feature_importance.csv")

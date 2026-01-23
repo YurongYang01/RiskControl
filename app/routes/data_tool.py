@@ -37,8 +37,12 @@ def upload_file():
         return jsonify({'error': '没有选择文件'}), 400
     
     if file and allowed_file(file.filename):
-        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], 'train.csv')
+        # Script expects data/train.csv
+        file_path = os.path.join(current_app.config['PROJECT_ROOT'], 'data', 'uploads', 'train.csv')
+        # Also copy to data/train.csv as scripts use it
         file.save(file_path)
+        import shutil
+        shutil.copy(file_path, os.path.join(current_app.config['PROJECT_ROOT'], 'data', 'train.csv'))
         return jsonify({'success': '文件上传成功'})
     
     return jsonify({'error': '只允许上传CSV文件'}), 400
@@ -58,7 +62,6 @@ def run_model():
         ], capture_output=True, text=True, cwd=current_app.config['PROJECT_ROOT'])
         
         if result.returncode == 0:
-            predictions_path = os.path.join(current_app.config['RESULTS_FOLDER'], 'pu_eval_output', 'pu_predictions.csv')
             # The script writes to result/pu_eval_output... relative to CWD.
             # If CWD is PROJECT_ROOT, it writes to PROJECT_ROOT/result/...
             # But we want it in data/results.
@@ -67,7 +70,7 @@ def run_model():
             # The script writes to: 'result/pu_eval_output/pu_predictions.csv'
             
             # Let's check where it wrote.
-            actual_output_path = os.path.join(current_app.config['PROJECT_ROOT'], 'result', 'pu_eval_output', 'pu_predictions.csv')
+            actual_output_path = os.path.join(current_app.config['PROJECT_ROOT'], 'data', 'results', 'pu_learning', 'pu_predictions.csv')
             
             if os.path.exists(actual_output_path):
                 df = pd.read_csv(actual_output_path)
@@ -80,11 +83,19 @@ def run_model():
                 
                 top_10_dict = top_10.reset_index().to_dict('records')
                 
+                # Load feature importance if exists
+                feature_importance_path = os.path.join(current_app.config['PROJECT_ROOT'], 'data', 'results', 'pu_learning', 'feature_importance.csv')
+                feature_importance = []
+                if os.path.exists(feature_importance_path):
+                    fi_df = pd.read_csv(feature_importance_path)
+                    feature_importance = fi_df.head(20).to_dict('records') # Return top 20 features
+
                 return jsonify({
                     'success': True,
                     'log': result.stdout,
                     'stderr': result.stderr,
                     'top_10': top_10_dict,
+                    'feature_importance': feature_importance,
                     'min_positive_confidence': min_positive_confidence,
                     'high_confidence_count': high_confidence_count,
                     'total_samples': total_samples
@@ -112,12 +123,12 @@ def run_model():
 @data_tool_bp.route('/download_predictions')
 def download_predictions():
     # Adjust path to where the script actually writes
-    results_path = os.path.join(current_app.config['PROJECT_ROOT'], 'result', 'pu_eval_output')
+    results_path = os.path.join(current_app.config['PROJECT_ROOT'], 'data', 'results', 'pu_learning')
     return send_from_directory(results_path, "pu_predictions.csv", as_attachment=True)
 
 @data_tool_bp.route('/get_full_results')
 def get_full_results():
-    results_path = os.path.join(current_app.config['PROJECT_ROOT'], 'result', 'pu_eval_output', 'pu_predictions.csv')
+    results_path = os.path.join(current_app.config['PROJECT_ROOT'], 'data', 'results', 'pu_learning', 'pu_predictions.csv')
     if os.path.exists(results_path):
         df = pd.read_csv(results_path)
         df_sample = df.head(100)
@@ -144,8 +155,10 @@ def upload_train():
     
     if file and allowed_file(file.filename):
         # Script expects data/train.csv
-        file_path = os.path.join(current_app.config['PROJECT_ROOT'], 'data', 'train.csv')
+        file_path = os.path.join(current_app.config['PROJECT_ROOT'], 'data', 'uploads', 'train.csv')
         file.save(file_path)
+        import shutil
+        shutil.copy(file_path, os.path.join(current_app.config['PROJECT_ROOT'], 'data', 'train.csv'))
         return jsonify({'success': '训练集文件上传成功'})
     
     return jsonify({'error': '只允许上传CSV文件'}), 400
@@ -163,7 +176,7 @@ def upload_pu():
     if file and allowed_file(file.filename):
         # Script expects pu_eval_output/pu_predictions.csv (relative to CWD)
         # So we stick to project root structure
-        output_dir = os.path.join(current_app.config['PROJECT_ROOT'], 'pu_eval_output')
+        output_dir = os.path.join(current_app.config['PROJECT_ROOT'], 'data', 'results', 'pu_learning')
         os.makedirs(output_dir, exist_ok=True)
         file_path = os.path.join(output_dir, 'pu_predictions.csv')
         file.save(file_path)
@@ -181,7 +194,7 @@ def run_model_feature_selection():
         ], capture_output=True, text=True, cwd=current_app.config['PROJECT_ROOT'])
         
         if result.returncode == 0:
-            feature_rank_file = os.path.join(current_app.config['PROJECT_ROOT'], 'feature_selection_results', 'feature_rank_comparison.csv')
+            feature_rank_file = os.path.join(current_app.config['PROJECT_ROOT'], 'data', 'results', 'feature_selection', 'feature_rank_comparison.csv')
             success = os.path.exists(feature_rank_file)
             
             return jsonify({
@@ -205,15 +218,20 @@ def run_model_feature_selection():
 
 @data_tool_bp.route('/download_results')
 def download_results():
-    results_path = os.path.join(current_app.config['PROJECT_ROOT'], 'feature_selection_results')
+    results_path = os.path.join(current_app.config['PROJECT_ROOT'], 'data', 'results', 'feature_selection')
     return send_from_directory(results_path, "feature_rank_comparison.csv", as_attachment=True)
 
 @data_tool_bp.route('/get_results_data')
 def get_results_data():
-    results_path = os.path.join(current_app.config['PROJECT_ROOT'], 'feature_selection_results', 'feature_rank_comparison.csv')
+    results_path = os.path.join(current_app.config['PROJECT_ROOT'], 'data', 'results', 'feature_selection', 'feature_rank_comparison.csv')
     if os.path.exists(results_path):
         df = pd.read_csv(results_path)
         df_sample = df.head(100)
+        
+        # Replace NaN with None for valid JSON serialization
+        # Must cast to object first, otherwise float columns might revert None to NaN
+        df_sample = df_sample.astype(object).where(pd.notnull(df_sample), None)
+        
         result_dict = df_sample.to_dict('records')
         return jsonify(result_dict)
     else:
