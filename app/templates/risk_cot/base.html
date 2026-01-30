@@ -71,29 +71,33 @@
 </div>
 </div>
 <nav class="flex-1 px-3 mt-4 space-y-1 overflow-y-auto">
-<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg sidebar-item-active transition-all" href="#">
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg sidebar-item-active transition-all" href="{{ url_for('main.index') }}">
 <span class="material-symbols-outlined text-[20px] fill-1">grid_view</span>
 <span class="text-xs font-semibold">首页</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-200/50 hover:text-slate-900 transition-all" href="#">
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-200/50 hover:text-slate-900 transition-all" href="{{ url_for('data_tool.pu_bagging') }}">
 <span class="material-symbols-outlined text-[20px]">database</span>
 <span class="text-xs font-medium">PULearning 数据处理</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-200/50 hover:text-slate-900 transition-all" href="#">
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-200/50 hover:text-slate-900 transition-all" href="{{ url_for('data_tool.pu_bagging') }}">
 <span class="material-symbols-outlined text-[20px]">account_tree</span>
 <span class="text-xs font-medium">数据工程</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-200/50 hover:text-slate-900 transition-all" href="#">
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-200/50 hover:text-slate-900 transition-all" href="{{ url_for('data_tool.ensemble_feature_selection') }}">
 <span class="material-symbols-outlined text-[20px]">hub</span>
 <span class="text-xs font-medium">特征工程</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-200/50 hover:text-slate-900 transition-all" href="#">
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-200/50 hover:text-slate-900 transition-all" href="{{ url_for('risk_cot_views.prompt_design') }}">
 <span class="material-symbols-outlined text-[20px]">prompt_suggestion</span>
 <span class="text-xs font-medium">Prompt设计</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-200/50 hover:text-slate-900 transition-all" href="#">
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-200/50 hover:text-slate-900 transition-all" href="{{ url_for('risk_cot_views.inference') }}">
 <span class="material-symbols-outlined text-[20px]">psychology</span>
 <span class="text-xs font-medium">COT数据合成</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-200/50 hover:text-slate-900 transition-all" href="{{ url_for('risk_cot_views.distillation') }}">
+<span class="material-symbols-outlined text-[20px]">compare_arrows</span>
+<span class="text-xs font-medium">模型蒸馏对比</span>
 </a>
 <a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-200/50 hover:text-slate-900 transition-all" href="#">
 <span class="material-symbols-outlined text-[20px]">fact_check</span>
@@ -175,7 +179,7 @@
 <div class="h-px flex-1 bg-slate-200/60"></div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-<a class="bg-white shadow-sm border border-slate-200 p-8 rounded-2xl card-hover group transition-all flex flex-col justify-between min-h-[220px]" href="#">
+<a class="bg-white shadow-sm border border-slate-200 p-8 rounded-2xl card-hover group transition-all flex flex-col justify-between min-h-[220px]" href="{{ url_for('data_tool.pu_bagging') }}">
 <div>
 <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
 <span class="material-symbols-outlined text-primary text-3xl">database</span>
@@ -188,7 +192,7 @@
 <span class="material-symbols-outlined text-sm">arrow_forward</span>
 </div>
 </a>
-<a class="bg-white shadow-sm border border-slate-200 p-8 rounded-2xl card-hover group transition-all flex flex-col justify-between min-h-[220px]" href="#">
+<a class="bg-white shadow-sm border border-slate-200 p-8 rounded-2xl card-hover group transition-all flex flex-col justify-between min-h-[220px]" href="{{ url_for('data_tool.pu_bagging') }}">
 <div>
 <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
 <span class="material-symbols-outlined text-primary text-3xl">account_tree</span>
@@ -201,7 +205,7 @@
 <span class="material-symbols-outlined text-sm">arrow_forward</span>
 </div>
 </a>
-<a class="bg-white shadow-sm border border-slate-200 p-8 rounded-2xl card-hover group transition-all flex flex-col justify-between min-h-[220px]" href="#">
+<a class="bg-white shadow-sm border border-slate-200 p-8 rounded-2xl card-hover group transition-all flex flex-col justify-between min-h-[220px]" href="{{ url_for('data_tool.ensemble_feature_selection') }}">
 <div>
 <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
 <span class="material-symbols-outlined text-primary text-3xl">hub</span>
@@ -214,7 +218,7 @@
 <span class="material-symbols-outlined text-sm">arrow_forward</span>
 </div>
 </a>
-<a class="bg-white shadow-sm border border-slate-200 p-8 rounded-2xl card-hover group transition-all flex flex-col justify-between min-h-[220px]" href="#">
+<a class="bg-white shadow-sm border border-slate-200 p-8 rounded-2xl card-hover group transition-all flex flex-col justify-between min-h-[220px]" href="{{ url_for('risk_cot_views.prompt_design') }}">
 <div>
 <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
 <span class="material-symbols-outlined text-primary text-3xl">prompt_suggestion</span>
@@ -227,7 +231,7 @@
 <span class="material-symbols-outlined text-sm">arrow_forward</span>
 </div>
 </a>
-<a class="bg-white shadow-sm border border-slate-200 p-8 rounded-2xl card-hover group transition-all flex flex-col justify-between min-h-[220px]" href="#">
+<a class="bg-white shadow-sm border border-slate-200 p-8 rounded-2xl card-hover group transition-all flex flex-col justify-between min-h-[220px]" href="{{ url_for('risk_cot_views.inference') }}">
 <div>
 <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
 <span class="material-symbols-outlined text-primary text-3xl">psychology</span>

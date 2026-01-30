@@ -29,17 +29,17 @@ def create_app():
     # Register Blueprints
     from app.routes.main import main_bp
     from app.routes.data_tool import data_tool_bp
-    from app.routes.risk_cot.generator import generator_bp
     from app.routes.risk_cot.inference import inference_bp
-    from app.routes.risk_cot.inspector import inspector_bp
     from app.routes.risk_cot.views import views_bp
+    from app.routes.risk_cot.prompt_design import prompt_design_bp
+    from app.routes.risk_cot.distillation import distillation_bp
     
     app.register_blueprint(main_bp)
     app.register_blueprint(data_tool_bp, url_prefix='/data_tool')
-    app.register_blueprint(generator_bp)
     app.register_blueprint(inference_bp)
-    app.register_blueprint(inspector_bp)
     app.register_blueprint(views_bp, url_prefix='/risk_cot')
+    app.register_blueprint(prompt_design_bp)
+    app.register_blueprint(distillation_bp)
     
     return app
 

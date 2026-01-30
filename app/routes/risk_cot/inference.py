@@ -56,7 +56,8 @@ def run_inference():
             
         # Generate output filename
         base_name = os.path.basename(input_file).replace('.jsonl', '')
-        output_file = os.path.join(current_app.config['RESULTS_FOLDER'], f"{base_name}_inference_result.jsonl")
+        timestamp = int(time.time())
+        output_file = os.path.join(current_app.config['RESULTS_FOLDER'], f"{base_name}_{timestamp}_result.jsonl")
         
         config = {
             'input_file': input_file,
@@ -64,7 +65,9 @@ def run_inference():
             'api_key': api_key,
             'model': data.get('model', 'deepseek-reasoner'),
             'workers': int(data.get('workers', 5)),
-            'base_url': data.get('base_url', "https://api.deepseek.com/chat/completions")
+            'base_url': data.get('base_url', "https://api.deepseek.com/chat/completions"),
+            'original_prompt': data.get('original_prompt'),
+            'optimized_prompt': data.get('optimized_prompt')
         }
         
         # Check if already running

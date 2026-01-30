@@ -49,8 +49,8 @@
             </div>
             <div class="connector-line"></div>
             <div class="compact-node min-w-[100px]">
-                <span class="material-symbols-outlined text-slate-500 mb-1.5 text-lg">prompt_suggestion</span>
-                <span class="text-[10px] font-semibold text-slate-700">Prompt设计</span>
+                <span class="material-symbols-outlined text-slate-500 mb-1.5 text-lg">design_services</span>
+                <span class="text-[10px] font-semibold text-slate-700">提示词设计</span>
             </div>
             <div class="connector-line"></div>
             <div class="compact-node min-w-[100px]">
@@ -59,8 +59,8 @@
             </div>
             <div class="connector-line"></div>
             <div class="compact-node min-w-[100px]">
-                <span class="material-symbols-outlined text-slate-500 mb-1.5 text-lg">fact_check</span>
-                <span class="text-[10px] font-semibold text-slate-700">COT数据质检</span>
+                <span class="material-symbols-outlined text-slate-500 mb-1.5 text-lg">compare_arrows</span>
+                <span class="text-[10px] font-semibold text-slate-700">模型蒸馏对比</span>
             </div>
         </div>
     </div>
@@ -102,14 +102,14 @@
         <span class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">大模型风控模块</span>
         <div class="h-px flex-1 bg-slate-200/60"></div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        <a class="bg-white shadow-sm border border-slate-200 p-8 rounded-2xl card-hover group transition-all flex flex-col justify-between min-h-[220px]" href="{{ url_for('risk_cot_views.index') }}">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <a class="bg-white shadow-sm border border-slate-200 p-8 rounded-2xl card-hover group transition-all flex flex-col justify-between min-h-[220px]" href="{{ url_for('risk_cot_views.prompt_design') }}">
             <div>
                 <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
-                    <span class="material-symbols-outlined text-primary text-3xl">prompt_suggestion</span>
+                    <span class="material-symbols-outlined text-primary text-3xl">design_services</span>
                 </div>
-                <h5 class="text-lg font-bold text-slate-900 mb-2">Prompt设计</h5>
-                <p class="text-sm text-slate-500 leading-relaxed">大模型指令集优化与调试</p>
+                <h5 class="text-lg font-bold text-slate-900 mb-2">提示词设计</h5>
+                <p class="text-sm text-slate-500 leading-relaxed">提示词工程优化与智能迭代</p>
             </div>
             <div class="mt-6 flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider group-hover:translate-x-1 transition-transform">
                 <span>进入模块</span>
@@ -129,13 +129,13 @@
                 <span class="material-symbols-outlined text-sm">arrow_forward</span>
             </div>
         </a>
-        <a class="bg-white shadow-sm border border-slate-200 p-8 rounded-2xl card-hover group transition-all flex flex-col justify-between min-h-[220px]" href="{{ url_for('risk_cot_views.inspector') }}">
+        <a class="bg-white shadow-sm border border-slate-200 p-8 rounded-2xl card-hover group transition-all flex flex-col justify-between min-h-[220px]" href="{{ url_for('risk_cot_views.distillation') }}">
             <div>
                 <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
-                    <span class="material-symbols-outlined text-primary text-3xl">fact_check</span>
+                    <span class="material-symbols-outlined text-primary text-3xl">compare_arrows</span>
                 </div>
-                <h5 class="text-lg font-bold text-slate-900 mb-2">COT数据质检</h5>
-                <p class="text-sm text-slate-500 leading-relaxed">合成数据逻辑闭环审核</p>
+                <h5 class="text-lg font-bold text-slate-900 mb-2">模型蒸馏对比</h5>
+                <p class="text-sm text-slate-500 leading-relaxed">对比训练前后模型推理效果差异</p>
             </div>
             <div class="mt-6 flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider group-hover:translate-x-1 transition-transform">
                 <span>进入模块</span>

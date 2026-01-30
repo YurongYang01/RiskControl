@@ -23,7 +23,9 @@ class InferenceEngine:
             "total": 0,
             "processed": 0,
             "current_file": None,
-            "error": None
+            "output_file": None,
+            "error": None,
+            "latest_results": []
         }
         self._lock = threading.Lock()
 
@@ -57,7 +59,9 @@ class InferenceEngine:
                 "total": 0,
                 "processed": 0,
                 "current_file": config.get('input_file'),
-                "error": None
+                "output_file": config.get('output_file'),
+                "error": None,
+                "latest_results": []
             }
 
         try:
@@ -78,6 +82,9 @@ class InferenceEngine:
         workers = config.get('workers', 5)
         model = config.get('model', 'deepseek-reasoner')
         base_url = config.get('base_url', "https://api.deepseek.com/chat/completions")
+        orig_prompt = config.get('original_prompt')
+        opt_prompt = config.get('optimized_prompt')
+        is_distillation = config.get('is_distillation', False)
 
         # 1. 加载数据
         if not os.path.exists(input_file):
@@ -93,10 +100,11 @@ class InferenceEngine:
                         pass
         
         # 2. 断点续传
-        processed_hashes = self._load_processed_hashes(output_file)
+        prompt_suffix = f"{orig_prompt}{opt_prompt}" if orig_prompt else ("distillation" if is_distillation else "")
+        processed_hashes = self._load_processed_hashes(output_file, prompt_suffix)
         tasks = []
         for item in all_data:
-            if self._get_data_hash(item) not in processed_hashes:
+            if self._get_data_hash(item, prompt_suffix) not in processed_hashes:
                 tasks.append(item)
         
         with self._lock:
@@ -111,34 +119,116 @@ class InferenceEngine:
         
         # 4. 多线程处理
         with ThreadPoolExecutor(max_workers=workers) as executor:
-            future_to_item = {
-                executor.submit(self._process_item, item, api_key, model, base_url): item 
-                for item in tasks
-            }
+            if is_distillation:
+                model_before = config.get('model_before')
+                model_after = config.get('model_after')
+                base_url_before = config.get('base_url_before')
+                base_url_after = config.get('base_url_after')
+                api_key_before = config.get('api_key_before', api_key)
+                api_key_after = config.get('api_key_after', api_key)
+                
+                future_to_item = {
+                    executor.submit(self._process_distillation_item, item, api_key_before, api_key_after, 
+                                   model_before, model_after, base_url_before, base_url_after, opt_prompt): item 
+                    for item in tasks
+                }
+            else:
+                future_to_item = {
+                    executor.submit(self._process_item, item, api_key, model, base_url, orig_prompt, opt_prompt): item 
+                    for item in tasks
+                }
             
             for future in as_completed(future_to_item):
                 if self._stop_event.is_set():
                     break
                 
-                result_item = future.result()
-                if result_item:
-                    # 写入结果
-                    with open(output_file, 'a', encoding='utf-8') as f:
-                        f.write(json.dumps(result_item, ensure_ascii=False) + '\n')
-                
-                with self._lock:
-                    self._status["processed"] += 1
+                try:
+                    result_item = future.result()
+                    if result_item:
+                        # 写入结果
+                        with open(output_file, 'a', encoding='utf-8') as f:
+                            f.write(json.dumps(result_item, ensure_ascii=False) + '\n')
+                        
+                        with self._lock:
+                            self._status["processed"] += 1
+                            # Keep last 5 results for preview
+                            self._status["latest_results"].append(result_item)
+                            if len(self._status["latest_results"]) > 5:
+                                self._status["latest_results"].pop(0)
+                except Exception as e:
+                    logger.error(f"Future error: {e}")
 
-    def _process_item(self, item: Dict, api_key: str, model: str, base_url: str) -> Optional[Dict]:
+    def _process_distillation_item(self, item: Dict, api_key_before: str, api_key_after: str, 
+                                  model_before: str, model_after: str, 
+                                  base_url_before: str, base_url_after: str,
+                                  optimized_prompt: Optional[str] = None) -> Optional[Dict]:
         try:
-            instruction = item.get("instruction", "")
             input_text = item.get("input", "")
+            
+            # 如果有优化后的提示词模板，则使用它拼接特征数据
+            if optimized_prompt:
+                try:
+                    instruction = optimized_prompt.format(data_report=input_text)
+                    input_text = "" # 内容已经包含在 instruction 中了
+                except:
+                    instruction = f"{optimized_prompt}\n\n{input_text}"
+                    input_text = ""
+            else:
+                instruction = item.get("instruction", "你是一个风控专家，请分析以下数据并给出结论。")
+            
+            # 并行调用两个模型
+            res_before = self._call_llm(instruction, input_text, api_key_before, model_before, base_url_before)
+            res_after = self._call_llm(instruction, input_text, api_key_after, model_after, base_url_after)
+
+            item["output_before"] = self._format_output(res_before)
+            item["output_after"] = self._format_output(res_after)
+            item["output"] = item["output_after"]
+            return item
+        except Exception as e:
+            logger.error(f"处理蒸馏对比数据失败: {e}")
+            return None
+
+    def _format_output(self, res: Dict) -> str:
+        reasoning = res.get('reasoning', '').strip()
+        content = res.get('content', '').strip()
+        if reasoning:
+            return f"<think>\n{reasoning}\n</think>\n\n{content}"
+        return content
+
+    def _process_item(self, item: Dict, api_key: str, model: str, base_url: str, 
+                     original_prompt: Optional[str] = None, 
+                     optimized_prompt: Optional[str] = None) -> Optional[Dict]:
+        try:
+            input_text = item.get("input", "")
+            
+            # 模式 1: 对比模式
+            if original_prompt and optimized_prompt:
+                # 构造指令
+                def format_prompt(tpl, data):
+                    try:
+                        return tpl.format(data_report=data)
+                    except:
+                        return f"{tpl}\n\n{data}"
+
+                inst_orig = format_prompt(original_prompt, input_text)
+                inst_opt = format_prompt(optimized_prompt, input_text)
+
+                # 并行调用或顺序调用（这里简单起见顺序调用，或者可以再开线程）
+                res_orig = self._call_llm(inst_orig, "", api_key, model, base_url)
+                res_opt = self._call_llm(inst_opt, "", api_key, model, base_url)
+
+                item["output_original"] = f"<think>{res_orig['reasoning']}</think> <answer>{res_orig['content']}</answer>"
+                item["output_optimized"] = f"<think>{res_opt['reasoning']}</think> <answer>{res_opt['content']}</answer>"
+                item["output"] = item["output_optimized"] # 兼容旧版，默认显示优化的
+                return item
+
+            # 模式 2: 普通模式
+            instruction = item.get("instruction", "")
             if not instruction and not input_text:
                 return None
 
             result = self._call_llm(instruction, input_text, api_key, model, base_url)
             
-            # 只有成功获取结果才返回
             if result['content'] or result['reasoning']:
                 item["output"] = f"<think>{result['reasoning']}</think> <answer>{result['content']}</answer>"
                 return item
@@ -200,11 +290,11 @@ class InferenceEngine:
         
         return {"reasoning": "", "content": ""}
 
-    def _get_data_hash(self, item: Dict) -> str:
-        content = f"{item.get('instruction', '')}{item.get('input', '')}"
+    def _get_data_hash(self, item: Dict, suffix: str = "") -> str:
+        content = f"{item.get('instruction', '')}{item.get('input', '')}{suffix}"
         return hashlib.md5(content.encode('utf-8')).hexdigest()
 
-    def _load_processed_hashes(self, output_file: str) -> set:
+    def _load_processed_hashes(self, output_file: str, suffix: str = "") -> set:
         processed = set()
         if not os.path.exists(output_file):
             return processed
@@ -213,7 +303,7 @@ class InferenceEngine:
                 try:
                     if not line.strip(): continue
                     item = json.loads(line)
-                    processed.add(self._get_data_hash(item))
+                    processed.add(self._get_data_hash(item, suffix))
                 except:
                     continue
         return processed

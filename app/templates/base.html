@@ -140,17 +140,17 @@
 <div class="px-4 py-2 mt-2 mb-1">
     <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">COT工程</span>
 </div>
-<a class="{{ 'sidebar-item-active' if active_page == 'prompt' else 'sidebar-item' }}" href="{{ url_for('risk_cot_views.index') }}">
-<span class="material-symbols-outlined text-[22px]">terminal</span>
-<span class="text-sm font-medium">Prompt设计</span>
+<a class="{{ 'sidebar-item-active' if active_page == 'prompt_design' else 'sidebar-item' }}" href="{{ url_for('risk_cot_views.prompt_design') }}">
+<span class="material-symbols-outlined text-[22px]">design_services</span>
+<span class="text-sm font-medium">提示词优化设计</span>
 </a>
 <a class="{{ 'sidebar-item-active' if active_page == 'cot_synthesis' else 'sidebar-item' }}" href="{{ url_for('risk_cot_views.inference') }}">
 <span class="material-symbols-outlined text-[22px]">auto_graph</span>
 <span class="text-sm font-medium">COT数据合成</span>
 </a>
-<a class="{{ 'sidebar-item-active' if active_page == 'cot_inspection' else 'sidebar-item' }}" href="{{ url_for('risk_cot_views.inspector') }}">
-<span class="material-symbols-outlined text-[22px]">fact_check</span>
-<span class="text-sm font-medium">COT数据质检</span>
+<a class="{{ 'sidebar-item-active' if active_page == 'model_distillation' else 'sidebar-item' }}" href="{{ url_for('risk_cot_views.distillation') }}">
+<span class="material-symbols-outlined text-[22px]">compare_arrows</span>
+<span class="text-sm font-medium">模型蒸馏对比</span>
 </a>
 </nav>
 <div class="p-4 border-t border-slate-100">
