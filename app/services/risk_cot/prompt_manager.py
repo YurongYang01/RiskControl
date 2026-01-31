@@ -66,6 +66,7 @@ class PromptManager:
                     {"id": "op_clear_step", "content": "步骤描述需要更清晰"},
                     {"id": "op_add_ref", "content": "引用具体的数据指标作为支撑"}
                 ],
+                "feature_maps": [],
                 "history": []
             }
             with open(self.storage_path, 'w', encoding='utf-8') as f:
@@ -74,10 +75,21 @@ class PromptManager:
     def _load_data(self) -> Dict[str, Any]:
         try:
             with open(self.storage_path, 'r', encoding='utf-8') as f:
-                return json.load(f)
+                data = json.load(f)
+                if "feature_maps" not in data:
+                    data["feature_maps"] = []
+                return data
         except Exception as e:
             logger.error(f"加载 Prompt 数据失败: {e}")
-            return {"templates": [], "rules": [], "opinions": [], "history": []}
+            return {"templates": [], "rules": [], "opinions": [], "feature_maps": [], "history": []}
+
+    # --- Feature Map Methods ---
+    def get_feature_maps(self) -> List[Dict]:
+        return self.data.get("feature_maps", [])
+
+    def update_feature_maps(self, feature_maps: List[Dict]):
+        self.data["feature_maps"] = feature_maps
+        self._save_data()
 
     def _save_data(self):
         try:

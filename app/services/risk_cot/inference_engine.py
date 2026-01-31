@@ -78,7 +78,7 @@ class InferenceEngine:
     def _execute_inference(self, config: Dict):
         input_file = config['input_file']
         output_file = config['output_file']
-        api_key = config['api_key']
+        api_key = config.get('api_key')
         workers = config.get('workers', 5)
         model = config.get('model', 'deepseek-reasoner')
         base_url = config.get('base_url', "https://api.deepseek.com/chat/completions")
@@ -158,32 +158,60 @@ class InferenceEngine:
                 except Exception as e:
                     logger.error(f"Future error: {e}")
 
+    def _format_with_features(self, tpl: str, item: Dict) -> str:
+        """
+        根据 item 中的特征值填充模板中的 {feature_name} 占位符。
+        如果模板包含 {data_report}，则优先处理。
+        """
+        try:
+            # 1. 如果模板中有 {data_report}，但 item 中没有显式定义，则将 item 的 input 作为 data_report
+            if "{data_report}" in tpl:
+                data_report = item.get("input", "")
+                tpl = tpl.replace("{data_report}", data_report)
+
+            # 2. 尝试替换所有 {key} 为 item 中的值
+            # 注意：这里我们动态匹配 item 中的所有 key
+            for key, value in item.items():
+                placeholder = f"{{{key}}}"
+                if placeholder in tpl:
+                    tpl = tpl.replace(placeholder, str(value))
+            
+            return tpl
+        except Exception as e:
+            logger.error(f"填充特征模板失败: {e}")
+            return tpl
+
     def _process_distillation_item(self, item: Dict, api_key_before: str, api_key_after: str, 
                                   model_before: str, model_after: str, 
                                   base_url_before: str, base_url_after: str,
                                   optimized_prompt: Optional[str] = None) -> Optional[Dict]:
-        try:
-            input_text = item.get("input", "")
+        if self._stop_event.is_set():
+            return None
             
-            # 如果有优化后的提示词模板，则使用它拼接特征数据
+        try:
+            # 模式：自动导入特征并拼接
             if optimized_prompt:
-                try:
-                    instruction = optimized_prompt.format(data_report=input_text)
-                    input_text = "" # 内容已经包含在 instruction 中了
-                except:
-                    instruction = f"{optimized_prompt}\n\n{input_text}"
-                    input_text = ""
+                instruction = self._format_with_features(optimized_prompt, item)
+                user_input = "" # 已在指令中
             else:
                 instruction = item.get("instruction", "你是一个风控专家，请分析以下数据并给出结论。")
+                user_input = item.get("input", "")
             
             # 并行调用两个模型
-            res_before = self._call_llm(instruction, input_text, api_key_before, model_before, base_url_before)
-            res_after = self._call_llm(instruction, input_text, api_key_after, model_after, base_url_after)
+            res_before = self._call_llm(instruction, user_input, api_key_before, model_before, base_url_before)
+            res_after = self._call_llm(instruction, user_input, api_key_after, model_after, base_url_after)
 
-            item["output_before"] = self._format_output(res_before)
-            item["output_after"] = self._format_output(res_after)
-            item["output"] = item["output_after"]
-            return item
+            # 构造包含 instruction, input, output, gt 的数据
+            result = {
+                "instruction": instruction,
+                "input": user_input,
+                "output_before": self._format_output(res_before),
+                "output_after": self._format_output(res_after),
+                "gt": item.get("output") or item.get("gt") or "", # 优先取原 output 作为 gt
+                "original_data": item # 保留原始特征数据
+            }
+            result["output"] = result["output_after"]
+            return result
         except Exception as e:
             logger.error(f"处理蒸馏对比数据失败: {e}")
             return None
@@ -198,41 +226,48 @@ class InferenceEngine:
     def _process_item(self, item: Dict, api_key: str, model: str, base_url: str, 
                      original_prompt: Optional[str] = None, 
                      optimized_prompt: Optional[str] = None) -> Optional[Dict]:
-        try:
-            input_text = item.get("input", "")
+        if self._stop_event.is_set():
+            return None
             
+        try:
             # 模式 1: 对比模式
             if original_prompt and optimized_prompt:
-                # 构造指令
-                def format_prompt(tpl, data):
-                    try:
-                        return tpl.format(data_report=data)
-                    except:
-                        return f"{tpl}\n\n{data}"
+                inst_orig = self._format_with_features(original_prompt, item)
+                inst_opt = self._format_with_features(optimized_prompt, item)
 
-                inst_orig = format_prompt(original_prompt, input_text)
-                inst_opt = format_prompt(optimized_prompt, input_text)
-
-                # 并行调用或顺序调用（这里简单起见顺序调用，或者可以再开线程）
+                # 并行调用
                 res_orig = self._call_llm(inst_orig, "", api_key, model, base_url)
                 res_opt = self._call_llm(inst_opt, "", api_key, model, base_url)
 
-                item["output_original"] = f"<think>{res_orig['reasoning']}</think> <answer>{res_orig['content']}</answer>"
-                item["output_optimized"] = f"<think>{res_opt['reasoning']}</think> <answer>{res_opt['content']}</answer>"
-                item["output"] = item["output_optimized"] # 兼容旧版，默认显示优化的
-                return item
+                result = {
+                    "instruction_original": inst_orig,
+                    "instruction_optimized": inst_opt,
+                    "input": "",
+                    "output_original": self._format_output(res_orig),
+                    "output_optimized": self._format_output(res_opt),
+                    "gt": item.get("output") or item.get("gt") or "",
+                    "original_data": item
+                }
+                result["output"] = result["output_optimized"]
+                return result
 
             # 模式 2: 普通模式
             instruction = item.get("instruction", "")
+            input_text = item.get("input", "")
+            
             if not instruction and not input_text:
                 return None
 
-            result = self._call_llm(instruction, input_text, api_key, model, base_url)
+            res = self._call_llm(instruction, input_text, api_key, model, base_url)
             
-            if result['content'] or result['reasoning']:
-                item["output"] = f"<think>{result['reasoning']}</think> <answer>{result['content']}</answer>"
-                return item
-            return None
+            result = {
+                "instruction": instruction,
+                "input": input_text,
+                "output": self._format_output(res),
+                "gt": item.get("output") or item.get("gt") or "",
+                "original_data": item
+            }
+            return result
         except Exception as e:
             logger.error(f"处理单条数据失败: {e}")
             return None
@@ -267,6 +302,10 @@ class InferenceEngine:
                     raise Exception(f"API Error: {response.text}")
                 
                 for line in response.iter_lines():
+                    if self._stop_event.is_set():
+                        response.close()
+                        return {"reasoning": reasoning_text, "content": content_text}
+                    
                     if not line: continue
                     decoded = line.decode('utf-8').strip()
                     if decoded.startswith("data:"):

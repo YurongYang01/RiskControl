@@ -23,6 +23,9 @@
                 <p class="text-slate-500 text-sm mt-1">智能优化提示词模板，支持自定义规则库与多维反馈系统。</p>
             </div>
             <div class="flex gap-3">
+                <button @click="showFeatureManager = true" class="px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border border-indigo-100">
+                    <span class="material-symbols-outlined text-[18px]">list_alt</span> 特征字段管理
+                </button>
                 <button @click="showRuleManager = true" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all flex items-center gap-2">
                     <span class="material-symbols-outlined text-[18px]">rule</span> 规则库管理
                 </button>
@@ -43,12 +46,71 @@
                         <option value="deepseek-reasoner">DeepSeek Reasoner (R1)</option>
                     </select>
                 </div>
+
+                <!-- Comparison Mode Toggle -->
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl border transition-all cursor-pointer"
+                     :class="comparisonMode ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-slate-50 border-slate-200 text-slate-600'"
+                     @click="comparisonMode = !comparisonMode">
+                    <span class="material-symbols-outlined text-[18px]">compare</span>
+                    <span class="text-[10px] font-bold uppercase tracking-wider">对比预览模式</span>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Comparison Mode View -->
+    <template x-if="comparisonMode">
+        <div class="flex-1 bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden flex flex-col min-h-0 animate-in fade-in zoom-in duration-300">
+            <div class="px-6 py-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <h3 class="text-sm font-bold text-slate-800">提示词效果对比 (滑动预览)</h3>
+                    <div class="flex gap-4">
+                        <span class="flex items-center gap-1.5 text-[10px] font-bold text-slate-400">
+                            <span class="size-2 rounded-full bg-slate-400"></span> 原始提示词
+                        </span>
+                        <span class="flex items-center gap-1.5 text-[10px] font-bold text-indigo-500">
+                            <span class="size-2 rounded-full bg-indigo-500"></span> 优化后提示词
+                        </span>
+                    </div>
+                </div>
+                <button @click="comparisonMode = false" class="text-slate-400 hover:text-slate-600">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            
+            <div class="flex-1 relative overflow-hidden bg-slate-900 select-none" 
+                 @mousemove="if($event.buttons === 1) comparisonPosition = Math.max(0, Math.min(100, ($event.offsetX / $el.clientWidth) * 100))"
+                 @click="comparisonPosition = ($event.offsetX / $el.clientWidth) * 100">
+                
+                <!-- Left: Original -->
+                <div class="absolute inset-0 p-8 overflow-auto custom-scrollbar-dark font-mono text-sm leading-relaxed text-slate-400 whitespace-pre-wrap"
+                     x-text="currentOriginalContent || '等待输入原始提示词...'">
+                </div>
+
+                <!-- Right: Optimized (Clipped) -->
+                <div class="absolute inset-0 p-8 overflow-auto custom-scrollbar-dark font-mono text-sm leading-relaxed text-indigo-300 whitespace-pre-wrap bg-slate-900 border-l border-indigo-500/30 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]"
+                     :style="`clip-path: inset(0 0 0 ${comparisonPosition}%); transition: clip-path 0.1s ease-out;`"
+                     x-text="optimizedContent || '等待生成优化后的提示词...'">
+                </div>
+
+                <!-- Slider Handle -->
+                <div class="absolute top-0 bottom-0 w-1 bg-indigo-500 cursor-col-resize z-10 flex items-center justify-center group"
+                     :style="`left: ${comparisonPosition}%; transition: left 0.1s ease-out;`"
+                     @mousedown.prevent>
+                    <div class="size-8 bg-indigo-500 rounded-full shadow-lg flex items-center justify-center text-white border-4 border-slate-900 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-[20px]">unfold_more</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-6 py-3 bg-slate-50 border-t border-slate-100 flex justify-center">
+                <input type="range" x-model="comparisonPosition" class="w-1/2 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600">
+            </div>
+        </div>
+    </template>
+
     <!-- Main Workspace -->
-    <div class="flex-1 grid grid-cols-12 gap-6 min-h-0">
+    <div class="flex-1 grid grid-cols-12 gap-6 min-h-0" x-show="!comparisonMode">
         
         <!-- 1. Original Template Area (Now Editable) -->
         <div class="col-span-4 flex flex-col gap-4 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
@@ -221,6 +283,95 @@
         </div>
     </div>
 
+    <!-- Feature Manager Modal -->
+    <div x-show="showFeatureManager" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm" x-transition>
+        <div class="bg-white rounded-3xl w-full max-w-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]" @click.away="showFeatureManager = false">
+            <div class="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-indigo-50/30">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800">样本特征字段管理</h3>
+                    <p class="text-[10px] text-slate-500 uppercase tracking-wider mt-0.5">Feature Mapping & Injection</p>
+                </div>
+                <button @click="showFeatureManager = false" class="text-slate-400 hover:text-slate-600">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-hidden flex flex-col p-6 gap-6">
+                <!-- Import Area -->
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">批量导入特征 (格式: 英文名,中文名)</label>
+                        <div class="flex gap-3">
+                            <button @click="loadSystemFeatures" class="text-[10px] font-bold text-slate-500 hover:text-slate-700 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">sync</span> 加载系统预设
+                            </button>
+                            <button @click="importFeatures" class="text-[10px] font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">download</span> 执行解析导入
+                            </button>
+                        </div>
+                    </div>
+                    <textarea x-model="featureImportText" 
+                              class="w-full h-32 p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none text-[11px] font-mono text-slate-600 custom-scrollbar resize-none"
+                              placeholder="cust_id,客户编号&#10;total_assets,资产总额&#10;overdue_days,逾期天数..."></textarea>
+                </div>
+
+                <!-- Feature List -->
+                <div class="flex-1 flex flex-col min-h-0">
+                    <div class="flex justify-between items-end mb-3">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">已解析特征列表 (<span x-text="featureMaps.length"></span>)</label>
+                        <button @click="featureMaps = []" class="text-[10px] font-bold text-red-500 hover:text-red-600">清空全部</button>
+                    </div>
+                    <div class="flex-1 overflow-y-auto border border-slate-100 rounded-2xl custom-scrollbar">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="sticky top-0 bg-slate-50 z-10">
+                                <tr>
+                                    <th class="px-4 py-2.5 text-[10px] font-bold text-slate-500 border-b border-slate-100">英文名 (ID)</th>
+                                    <th class="px-4 py-2.5 text-[10px] font-bold text-slate-500 border-b border-slate-100">中文描述</th>
+                                    <th class="px-4 py-2.5 text-right border-b border-slate-100"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template x-for="(feat, idx) in featureMaps" :key="idx">
+                                    <tr class="hover:bg-slate-50/50 transition-colors group">
+                                        <td class="px-4 py-2 text-[11px] font-mono text-slate-700" x-text="feat.en_name"></td>
+                                        <td class="px-4 py-2 text-[11px] text-slate-600" x-text="feat.zh_name"></td>
+                                        <td class="px-4 py-2 text-right">
+                                            <button @click="featureMaps.splice(idx, 1)" class="text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all">
+                                                <span class="material-symbols-outlined text-[16px]">delete</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </template>
+                                <template x-if="featureMaps.length === 0">
+                                    <tr>
+                                        <td colspan="3" class="px-4 py-12 text-center text-slate-400 italic text-xs">暂无特征数据，请在上方输入并点击“执行解析导入”</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-6 py-5 border-t border-slate-100 bg-slate-50/50 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" x-model="autoInjectFeatures" id="auto-inject" class="rounded text-indigo-600 focus:ring-indigo-500/20">
+                    <label for="auto-inject" class="text-[11px] font-medium text-slate-600">在优化时自动注入特征定义</label>
+                </div>
+                <div class="flex gap-3">
+                    <button @click="injectFeaturesToPrompt" 
+                            class="px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all shadow-sm">
+                        手动注入到提示词
+                    </button>
+                    <button @click="saveFeatureMaps" 
+                            class="px-6 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200">
+                        保存配置
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Rule Manager Modal -->
     <div x-show="showRuleManager" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm" x-transition>
         <div class="bg-white rounded-3xl w-full max-w-2xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh]" @click.away="showRuleManager = false">
@@ -302,9 +453,15 @@
             loadingOptimize: false,
             resultView: 'content',
             model: 'deepseek-chat',
+            comparisonMode: false,
+            comparisonPosition: 50,
             apiKey: localStorage.getItem('deepseek_api_key') || '',
             showRuleManager: false,
             showAddOpinion: false,
+            showFeatureManager: false,
+            autoInjectFeatures: true,
+            featureImportText: '',
+            featureMaps: [],
             newRule: { name: '', category: '语言风格', description: '' },
             newOpinion: '',
             history: [],
@@ -316,19 +473,22 @@
 
             async loadInitialData() {
                 try {
-                    const [tplRes, ruleRes, opRes] = await Promise.all([
+                    const [tplRes, ruleRes, opRes, featRes] = await Promise.all([
                         fetch('/api/prompt_design/templates'),
                         fetch('/api/prompt_design/rules'),
-                        fetch('/api/prompt_design/opinions')
+                        fetch('/api/prompt_design/opinions'),
+                        fetch('/api/prompt_design/feature_maps')
                     ]);
                     
                     const tplData = await tplRes.json();
                     const ruleData = await ruleRes.json();
                     const opData = await opRes.json();
+                    const featData = await featRes.json();
 
                     this.templates = tplData.templates;
                     this.rules = ruleData.rules;
                     this.opinions = opData.opinions;
+                    this.featureMaps = featData.feature_maps || [];
 
                     if (this.templates.length > 0) {
                         this.selectTemplate(this.templates[0]);
@@ -336,6 +496,79 @@
                 } catch (e) {
                     console.error('Failed to load data', e);
                 }
+            },
+
+            importFeatures() {
+                if (!this.featureImportText || !this.featureImportText.trim()) {
+                    window.dispatchEvent(new CustomEvent('notify', { detail: { message: '请输入特征内容', type: 'error' } }));
+                    return;
+                }
+                const lines = this.featureImportText.split('\n');
+                let count = 0;
+                lines.forEach(line => {
+                    if (!line.trim()) return;
+                    // 支持 英文名,中文名 或 英文名 中文名 (空格/制表符)
+                    const parts = line.includes(',') ? line.split(',') : (line.includes('，') ? line.split('，') : line.split(/\s+/));
+                    if (parts.length >= 2) {
+                        const en = parts[0].trim();
+                        const zh = parts[1].trim();
+                        if (en && zh && !this.featureMaps.find(f => f.en_name === en)) {
+                            this.featureMaps.push({ en_name: en, zh_name: zh });
+                            count++;
+                        }
+                    }
+                });
+                this.featureImportText = '';
+                window.dispatchEvent(new CustomEvent('notify', { detail: { message: `已成功解析并导入 ${count} 个新特征字段` } }));
+            },
+
+            async loadSystemFeatures() {
+                try {
+                    const res = await fetch('/api/prompt_design/feature_maps/system');
+                    const data = await res.json();
+                    if (data.status === 'success') {
+                        this.featureImportText = data.content;
+                        window.dispatchEvent(new CustomEvent('notify', { detail: { message: '系统预设特征已加载到输入框' } }));
+                    } else {
+                        window.dispatchEvent(new CustomEvent('notify', { detail: { message: data.message, type: 'error' } }));
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            },
+
+            async saveFeatureMaps() {
+                try {
+                    const res = await fetch('/api/prompt_design/feature_maps', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ feature_maps: this.featureMaps })
+                    });
+                    const data = await res.json();
+                    if (data.status === 'success') {
+                        window.dispatchEvent(new CustomEvent('notify', { detail: { message: '特征配置已保存' } }));
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            },
+
+            injectFeaturesToPrompt() {
+                if (this.featureMaps.length === 0) return;
+                
+                let featureDesc = "\n【待分析特征槽位列表】\n";
+                this.featureMaps.forEach(f => {
+                    featureDesc += `- ${f.zh_name}: {${f.en_name}}\n`;
+                });
+                
+                // Find where to inject. Try to inject before {data_report} or at the end.
+                if (this.currentOriginalContent.includes('{data_report}')) {
+                    this.currentOriginalContent = this.currentOriginalContent.replace('{data_report}', featureDesc + '\n{data_report}');
+                } else {
+                    this.currentOriginalContent += featureDesc;
+                }
+                
+                window.dispatchEvent(new CustomEvent('notify', { detail: { message: '特征槽位已注入到原始提示词中' } }));
             },
 
             selectTemplate(tpl) {
@@ -360,14 +593,30 @@
                 try {
                     const rulesToApply = this.rules.filter(r => this.selectedRules.includes(r.id));
                     
+                    let promptToOptimize = this.currentOriginalContent;
+                    let featureContext = "";
+                    if (this.featureMaps.length > 0) {
+                        featureContext = "\n【当前可用的特征字段及其中文名】\n";
+                        this.featureMaps.forEach(f => {
+                            featureContext += `- ${f.en_name}: ${f.zh_name}\n`;
+                        });
+                        
+                        // 强制要求优化后的提示词包含特征槽位
+                        const slotRequirement = `\n请注意：优化后的提示词必须在分析逻辑中引用上述特征，并使用 {特征英文名} 这样的槽位格式。例如：\"分析客户的{total_assets}情况\"。\n`;
+                        
+                        if (this.autoInjectFeatures) {
+                            promptToOptimize = featureContext + slotRequirement + "\n" + promptToOptimize;
+                        }
+                    }
+
                     const res = await fetch('/api/prompt_design/optimize', {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({
-                            original_prompt: this.currentOriginalContent,
+                            original_prompt: promptToOptimize,
                             rules: rulesToApply,
                             opinions: this.selectedOpinions,
-                            custom_feedback: this.customFeedback,
+                            custom_feedback: this.customFeedback + (featureContext ? "\n请结合提供的特征字段进行优化，并在提示词中使用 {特征名} 占位符。" : ""),
                             model: this.model,
                             api_key: this.apiKey
                         })

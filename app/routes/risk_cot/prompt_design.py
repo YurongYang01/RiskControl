@@ -1,4 +1,5 @@
-from flask import Blueprint, request, jsonify, current_app
+from flask import Blueprint, render_template, request, jsonify, current_app
+import os
 from app.services.risk_cot.prompt_manager import PromptManager
 from app.services.risk_cot.prompt_optimizer import PromptOptimizer
 import datetime
@@ -94,3 +95,38 @@ def get_latest_design():
         'status': 'success',
         'latest': latest
     })
+
+@prompt_design_bp.route('/feature_maps', methods=['GET', 'POST'])
+def handle_feature_maps():
+    if request.method == 'POST':
+        feature_maps = request.json.get('feature_maps', [])
+        manager.update_feature_maps(feature_maps)
+        return jsonify({'status': 'success', 'message': '特征映射已更新'})
+    return jsonify({
+        'status': 'success',
+        'feature_maps': manager.get_feature_maps()
+    })
+
+@prompt_design_bp.route('/feature_maps/system', methods=['GET'])
+def get_system_feature_maps():
+    try:
+        project_root = current_app.config['PROJECT_ROOT']
+        feat_file = os.path.join(project_root, 'config', '全部特征.txt')
+        if not os.path.exists(feat_file):
+            return jsonify({'status': 'error', 'message': '系统特征文件不存在'}), 404
+        
+        content = ""
+        with open(feat_file, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+            if len(lines) > 1: # Skip header
+                for line in lines[1:]:
+                    parts = line.strip().split(',')
+                    if len(parts) >= 2:
+                        content += f"{parts[0]},{parts[1]}\n"
+        
+        return jsonify({
+            'status': 'success',
+            'content': content
+        })
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500

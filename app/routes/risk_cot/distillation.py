@@ -45,18 +45,17 @@ def run_distillation():
         output_file = os.path.join(current_app.config['RESULTS_FOLDER'], f"distillation_{base_name}_{timestamp}.jsonl")
         
         # 核心配置项后端写死
-        DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY', 'sk-xxx')
-        QWEN_API_KEY = os.getenv('QWEN_API_KEY', 'sk-xxx')
+        DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY', 'sk-c26320ac5d7147c2af0f1b18885578e4')
         
         config = {
             'input_file': input_file,
             'output_file': output_file,
-            'api_key_before': QWEN_API_KEY,
+            'api_key_before': DEEPSEEK_API_KEY,
             'api_key_after': DEEPSEEK_API_KEY,
-            'model_before': 'qwen-turbo',
+            'model_before': 'deepseek-reasoner',
             'model_after': 'deepseek-reasoner',
             'workers': 3,
-            'base_url_before': "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+            'base_url_before': "https://api.deepseek.com/chat/completions",
             'base_url_after': "https://api.deepseek.com/chat/completions",
             'is_distillation': True,
             'optimized_prompt': optimized_prompt # 传递优化后的提示词模板

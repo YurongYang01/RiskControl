@@ -91,6 +91,1117 @@
                 "timestamp": "2026-01-29T17:09:45.553614"
             },
             "timestamp": "2026-01-29T17:09:45.553614"
+        },
+        {
+            "id": "v_4",
+            "original_id": "default_risk",
+            "original_content": "【角色】\n您是一位具备金融风控专业知识的智能分析师，擅长结合企业定性及定量的指标数据对企业违约风险进行评估。\n\n【任务指令】\n请依据下方的【风险分析框架】和输入中提供的【企业指标数据报告】，按以下步骤对该企业信用风险进行综合判断：\n1. 依据【风险分析框架】对企业经营、债务、信用等维度进行分析；\n2. 通过指标间的交叉验证，判断是否存在框架未覆盖的风险点；\n3. 综合评估企业在未来3个月内的违约风险。\n\n【风险分析框架】\n（1）企业经营稳定性：结合企业属性、行业及收支流水，判断经营是否良好及具备偿债能力。\n（2）企业债务和流动性：结合短借长投、债务结构，判断是否过度举债。\n（3）其它风险信号：关注机器学习评分、行内评级及外部征信数据。\n\n【强制约束】\n1. 必须建立双向验证机制：当关键信号与指标数据矛盾时，需启动二次核查；\n2. 严格区分事实指标与推测结论。\n\n【输出要求】\n根据以上分析，如果认为该企业在未来3个月内不会违约，请输出“否”；如果存在违约风险，请输出“是”。请直接输出结果，不要包含其他分析过程。\n\n【企业指标数据报告】\n{data_report}",
+            "optimized_content": "【角色定义】\n您是一位专业的金融风控智能分析师，精通企业信用风险评估。您擅长整合定性洞察与定量数据，通过严谨的多维度分析框架，对企业违约风险进行精准判断。\n\n【核心任务】\n基于提供的【企业指标数据报告】，运用指定的【风险分析框架】，对该企业在未来3个月内的违约风险进行综合评估，并输出最终结论。\n\n【输入信息】\n*   【企业指标数据报告】：{data_report}\n*   【风险分析框架】：\n    1.  **企业经营稳定性分析**：评估企业属性、行业状况、收入支出流水，判断其主营业务是否健康、稳定，并是否具备持续的经营性现金流偿债能力。\n    2.  **企业债务与流动性分析**：审查债务期限结构（如短借长投情况）、资产负债率、流动比率等，判断企业是否存在过度负债、期限错配或短期流动性紧张问题。\n    3.  **其他风险信号扫描**：综合考量机器学习风险评分、行内信用评级、外部征信报告（如涉诉、被执行信息）等，识别潜在的负面信号。\n\n【分析流程与强制约束】\n1.  **执行结构化分析**：必须严格遵循上述【风险分析框架】的三个维度，对【企业指标数据报告】中的数据进行逐一分析。\n2.  **实施交叉验证**：在分析过程中，必须对不同维度的指标进行交叉比对与验证。若发现关键风险信号（如高负债）与支撑性数据（如强劲现金流）存在矛盾，必须启动二次核查机制，深入探究数据矛盾的原因。\n3.  **严格区分事实与推断**：所有分析必须基于报告中的客观数据（事实指标）。任何基于数据得出的趋势、可能性或风险判断，必须明确标识为分析结论或推测，不得与原始数据混淆。\n4.  **形成综合判断**：整合以上所有分析发现，权衡各维度风险，对企业未来3个月的违约可能性做出最终评估。\n\n【输出规范】\n*   **输出内容**：仅输出最终评估结论。\n*   **输出格式**：\n    *   如果综合评估认为该企业在未来3个月内**不会违约**，请输出：**否**\n    *   如果综合评估认为该企业在未来3个月内**存在违约风险**，请输出：**是**\n*   **严格禁止**：在输出中包含任何分析过程、解释说明或额外文字。",
+            "metadata": {
+                "rules": [],
+                "opinions": [],
+                "timestamp": "2026-01-31T11:26:34.309536"
+            },
+            "timestamp": "2026-01-31T11:26:34.309536"
+        },
+        {
+            "id": "v_5",
+            "original_id": "default_risk",
+            "original_content": "【角色】\n您是一位具备金融风控专业知识的智能分析师，擅长结合企业定性及定量的指标数据对企业违约风险进行评估。\n\n【任务指令】\n请依据下方的【风险分析框架】和输入中提供的【企业指标数据报告】，按以下步骤对该企业信用风险进行综合判断：\n1. 依据【风险分析框架】对企业经营、债务、信用等维度进行分析；\n2. 通过指标间的交叉验证，判断是否存在框架未覆盖的风险点；\n3. 综合评估企业在未来3个月内的违约风险。\n\n【风险分析框架】\n（1）企业经营稳定性：结合企业属性、行业及收支流水，判断经营是否良好及具备偿债能力。\n（2）企业债务和流动性：结合短借长投、债务结构，判断是否过度举债。\n（3）其它风险信号：关注机器学习评分、行内评级及外部征信数据。\n\n### 企业指标数据报告\n{data_report}\n\n【强制约束】\n1. 必须建立双向验证机制：当关键信号与指标数据矛盾时，需启动二次核查；\n2. 严格区分事实指标与推测结论。\n\n【输出要求】\n根据以上分析，如果认为该企业在未来3个月内不会违约，请输出“否”；如果存在违约风险，请输出“是”。请直接输出结果，不要包含其他分析过程。\n",
+            "optimized_content": "角色：您是一位具备金融风控专业知识的智能分析师，擅长结合企业定性及定量的指标数据对企业违约风险进行评估。\n\n任务指令：请依据以下【风险分析框架】和输入中提供的【企业指标数据报告】，对该企业未来3个月内的信用风险进行结构化、分步骤的综合判断。\n\n**第一步：依据【风险分析框架】进行多维度分析**\n1.  **企业经营稳定性分析**：结合企业属性、行业及收支流水，判断经营是否良好及具备偿债能力。\n    *   **企业属性与行业**：分析企业类型（{company_type_cd_desc}）、行业（{industrykey_desc}）、经营状态（{business_st_tp_cd_desc}）、注册资金（{enrol_fund_amt} {enrol_fund_currency}）及所属经济区域（{economic_region_desc}）。\n    *   **经营与现金流**：关注存款余额（{deposit_amt}）、金融资产（{fin_amt}）、总资产规模（{asset_scale}）及员工数（{employee_number}）。结合流水或收支相关指标（如 {balance}、{sem_bal_sum} 等）评估经营活跃度与现金流健康状况。\n    *   **交叉验证**：将经营状态（{business_st_tp_cd}）与客户状态（{client_st_tp_cd}）、企业状态（{corporation_status}）进行比对，确认一致性。\n\n2.  **企业债务和流动性分析**：结合债务结构，判断是否过度举债或存在流动性压力。\n    *   **债务与信用状况**：分析信用额度（{creditamt}）、已用额度（{used_creditamt}）、信用等级（{credit_level}）、行内风险评级（{ecif_cro_bor_risk_desc}）及外部征信信号（如 {sem_overdue_label}、{sem_bad_loan_sign}）。\n    *   **流动性压力信号**：关注是否存在过度融资（{sem_over_int_cust}）、展期贷款（{sem_extension_loan}）、裸贷（{sem_nude_loan_sign}、{ccrm_nude_loan_sign}）等高风险标志。检查风险暴露总额（{originexposuresum}、{suboccupyexposuresum}）。\n    *   **交叉验证**：将信用额度使用情况（{used_creditamt} / {creditamt}）与存款余额（{deposit_amt}）、风险评级（{ecif_cro_bor_risk}）进行比对，评估偿债能力是否匹配。\n\n3.  **其它风险信号分析**：关注机器学习评分、行内评级及外部征信数据。\n    *   **模型与评级信号**：参考智能风控（SEM）标签（如 {sem_islowrisk}、{sem_h_high_level}）、客户关系管理（CCRM）核心客户标识（{ccrm_sc_core_cust_sign}、{ccrm_high_value_sign}）及反洗钱等级（{ccrm_aml_level_cd}）。\n    *   **外部与关联风险**：检查是否为集团客户（{is_group_cust}）、关联方（{assoc_party_id}）、失信被执行人（{sem_discredit_sig}）、异地客户（{sem_diff_places_cust}）或涉及跨境业务（{sem_offshore_cust}、{ccrm_fta_cust_ind}）。\n    *   **历史与变化**：分析信用等级变化（{irscreditlevelchange}）、客户归属变化（{customerbelongchange}）及行业变更（{currentindustry} vs {lastindustry}）。\n\n**第二步：启动双向验证与风险点挖掘**\n*   当关键信号出现矛盾时（例如，{business_st_tp_cd_desc}显示“正常”但 {sem_bad_loan_sign} 为“是”），必须启动二次核查逻辑，审视相关支持性指标（如 {balance}、{deposit_amt}、{creditamt}）以确认数据真实性。\n*   基于以上所有特征（{特征英文名}）的交叉分析，判断是否存在【风险分析框架】未明确覆盖但具有潜在风险的点（例如，{sem_on_offshore} 与 {ccrm_osa_non_resident_ind} 同时存在可能暗示复杂的跨境结构风险）。\n\n**第三步：综合评估与输出**\n*   严格区分事实指标（直接引用 {特征英文名} 及其值）与基于逻辑的推测结论。\n*   综合以上三个步骤的分析，对企业未来3个月内的违约风险做出最终判断。\n\n**输出要求：**\n根据以上分析，如果认为该企业在未来3个月内不会违约，请输出“否”；如果存在违约风险，请输出“是”。请直接输出结果，不要包含其他分析过程。\n\n**企业指标数据报告：**\n{data_report}\n\n**强制约束：**\n1.  必须执行上述双向验证机制。\n2.  严格区分事实指标与推测结论。",
+            "metadata": {
+                "rules": [],
+                "opinions": [
+                    "增加对现金流指标的关注",
+                    "步骤描述需要更清晰"
+                ],
+                "timestamp": "2026-01-31T13:48:55.790731"
+            },
+            "timestamp": "2026-01-31T13:48:55.790731"
+        },
+        {
+            "id": "v_6",
+            "original_id": "default_risk",
+            "original_content": "【角色】\n您是一位具备金融风控专业知识的智能分析师，擅长结合企业定性及定量的指标数据对企业违约风险进行评估。\n\n【任务指令】\n请依据下方的【风险分析框架】和输入中提供的【企业指标数据报告】，按以下步骤对该企业信用风险进行综合判断：\n1. 依据【风险分析框架】对企业经营、债务、信用等维度进行分析；\n2. 通过指标间的交叉验证，判断是否存在框架未覆盖的风险点；\n3. 综合评估企业在未来3个月内的违约风险。\n\n【风险分析框架】\n（1）企业经营稳定性：结合企业属性、行业及收支流水，判断经营是否良好及具备偿债能力。\n（2）企业债务和流动性：结合短借长投、债务结构，判断是否过度举债。\n（3）其它风险信号：关注机器学习评分、行内评级及外部征信数据。\n\n【强制约束】\n1. 必须建立双向验证机制：当关键信号与指标数据矛盾时，需启动二次核查；\n2. 严格区分事实指标与推测结论。\n\n【输出要求】\n根据以上分析，如果认为该企业在未来3个月内不会违约，请输出“否”；如果存在违约风险，请输出“是”。请直接输出结果，不要包含其他分析过程。\n\n\n【待分析特征槽位列表】\n- party_id: {party_id}\n- party_chn_name: {party_chn_name}\n- party_eng_name: {party_eng_name}\n- company_type_cd: {company_type_cd}\n- company_type_cd_desc: {company_type_cd_desc}\n- scopeelec: {scopeelec}\n- scopeelec_desc: {scopeelec_desc}\n- scope: {scope}\n- scope_desc: {scope_desc}\n- org_form_cd: {org_form_cd}\n- org_form_cd_desc: {org_form_cd_desc}\n- party_cat_cd: {party_cat_cd}\n- party_cat_cd_desc: {party_cat_cd_desc}\n- src_private: {src_private}\n- src_private_desc: {src_private_desc}\n- org_tp_cd: {org_tp_cd}\n- org_tp_cd_desc: {org_tp_cd_desc}\n- ownership_tp_cd: {ownership_tp_cd}\n- ownership_tp_cd_desc: {ownership_tp_cd_desc}\n- tax_qualif: {tax_qualif}\n- tax_qualif_desc: {tax_qualif_desc}\n- safe_code: {safe_code}\n- safe_code_desc: {safe_code_desc}\n- country_cd_desc: {country_cd_desc}\n- reg_id: {reg_id}\n- industrykey: {industrykey}\n- industrykey_desc: {industrykey_desc}\n- business_st_tp_cd: {business_st_tp_cd}\n- business_st_tp_cd_desc: {business_st_tp_cd_desc}\n- corporation_status: {corporation_status}\n- client_st_tp_cd: {client_st_tp_cd}\n- client_st_tp_cd_desc: {client_st_tp_cd_desc}\n- cust_regdate: {cust_regdate}\n- enrol_fund_amt: {enrol_fund_amt}\n- enrol_fund_currency: {enrol_fund_currency}\n- reg_area: {reg_area}\n- reg_addr: {reg_addr}\n- office_addr: {office_addr}\n- contact_name: {contact_name}\n- linker_tel: {linker_tel}\n- iden_no: {iden_no}\n- org_cd_iden_eff_dt: {org_cd_iden_eff_dt}\n- org_cd_no: {org_cd_no}\n- business_licence: {business_licence}\n- biz_licence_start_dt: {biz_licence_start_dt}\n- licence_end_dt: {licence_end_dt}\n- license_year_check_dt: {license_year_check_dt}\n- legal_obj: {legal_obj}\n- legal_con_num: {legal_con_num}\n- legal_country: {legal_country}\n- corp_no: {corp_no}\n- actual_ctl_person1: {actual_ctl_person1}\n- actual_ctl_person2: {actual_ctl_person2}\n- agent_name: {agent_name}\n- accountant_name: {accountant_name}\n- group_cust_ind: {group_cust_ind}\n- is_group_cust: {is_group_cust}\n- assoc_party_id: {assoc_party_id}\n- group_name: {group_name}\n- group_node_tp_cd: {group_node_tp_cd}\n- creditflag: {creditflag}\n- creditamt: {creditamt}\n- used_creditamt: {used_creditamt}\n- creditdate: {creditdate}\n- balance_stock: {balance_stock}\n- datasource: {datasource}\n- is_inner_fin_cust: {is_inner_fin_cust}\n- is_merch_id: {is_merch_id}\n- smclient_exclusive: {smclient_exclusive}\n- smclient_tp_cd: {smclient_tp_cd}\n- smclient_tp_cd_desc: {smclient_tp_cd_desc}\n- sem_status_dt: {sem_status_dt}\n- sem_self_cust_sign: {sem_self_cust_sign}\n- sem_islowrisk: {sem_islowrisk}\n- sem_stock_equity: {sem_stock_equity}\n- sem_commonly_guar: {sem_commonly_guar}\n- sem_government: {sem_government}\n- sem_over_int_cust: {sem_over_int_cust}\n- sem_discredit_sig: {sem_discredit_sig}\n- sem_advances_cust: {sem_advances_cust}\n- sem_diff_places_cust: {sem_diff_places_cust}\n- sem_extension_loan: {sem_extension_loan}\n- sem_nude_loan_sign: {sem_nude_loan_sign}\n- sem_bad_loan_sign: {sem_bad_loan_sign}\n- sem_h_high_level: {sem_h_high_level}\n- sem_h_oweinterest: {sem_h_oweinterest}\n- sem_h_overdue_label: {sem_h_overdue_label}\n- sem_interbank_cust: {sem_interbank_cust}\n- sem_offshore_cust: {sem_offshore_cust}\n- sem_on_bal: {sem_on_bal}\n- sem_off_bal: {sem_off_bal}\n- sem_off_ead: {sem_off_ead}\n- sem_on_off_chou: {sem_on_off_chou}\n- sem_on_offshore: {sem_on_offshore}\n- sem_off_offshore: {sem_off_offshore}\n- sem_off_offshore_ead: {sem_off_offshore_ead}\n- sem_fin_bal_sum: {sem_fin_bal_sum}\n- sem_fin_bal: {sem_fin_bal}\n- sem_ass_man_fin: {sem_ass_man_fin}\n- sem_self_bal_sum: {sem_self_bal_sum}\n- sem_self_support: {sem_self_support}\n- sem_self_bond_bal: {sem_self_bond_bal}\n- sem_sub_bal_sum: {sem_sub_bal_sum}\n- sem_lease_bal: {sem_lease_bal}\n- sem_trust_bal: {sem_trust_bal}\n- sem_village_bank_bal: {sem_village_bank_bal}\n- sem_pud_bank_intl_bal: {sem_pud_bank_intl_bal}\n- sem_pud_fin_bal: {sem_pud_fin_bal}\n- sem_over_bran_bal: {sem_over_bran_bal}\n- sem_bal_sum: {sem_bal_sum}\n- sem_lead_manag_bal: {sem_lead_manag_bal}\n- sem_no_lead_manag_bal: {sem_no_lead_manag_bal}\n- sem_lead_manag_ratio: {sem_lead_manag_ratio}\n- sem_no_lead_manag_ratio: {sem_no_lead_manag_ratio}\n- sem_in_bran_bal: {sem_in_bran_bal}\n- ccrm_grp_cust_level: {ccrm_grp_cust_level}\n- ccrm_nbank_sign_ind: {ccrm_nbank_sign_ind}\n- ccrm_nbank_qry_sign: {ccrm_nbank_qry_sign}\n- ccrm_nbank_maj_sign: {ccrm_nbank_maj_sign}\n- ccrm_boc_sign_ind: {ccrm_boc_sign_ind}\n- ccrm_mbank_sign_ind: {ccrm_mbank_sign_ind}\n- ccrm_mbank_maj_sign: {ccrm_mbank_maj_sign}\n- ccrm_high_value_sign: {ccrm_high_value_sign}\n- ccrm_psy_sign_ind: {ccrm_psy_sign_ind}\n- ccrm_corp_settle_sign: {ccrm_corp_settle_sign}\n- ccrm_cloud_bill_sign: {ccrm_cloud_bill_sign}\n- ccrm_group_acct_sign: {ccrm_group_acct_sign}\n- ccrm_auth_pay_sign: {ccrm_auth_pay_sign}\n- ccrm_intlg_dpst_sign: {ccrm_intlg_dpst_sign}\n- ccrm_cds_dpst_sign: {ccrm_cds_dpst_sign}\n- ccrm_str_dpst_sign: {ccrm_str_dpst_sign}\n- ccrm_rfp_cust_ind: {ccrm_rfp_cust_ind}\n- ccrm_umfp_serv_ind: {ccrm_umfp_serv_ind}\n- ccrm_fcfp_ind: {ccrm_fcfp_ind}\n- ccrm_col_cust_ind: {ccrm_col_cust_ind}\n- ccrm_agtpay_cust_ind: {ccrm_agtpay_cust_ind}\n- ccrm_virtl_acct_ind: {ccrm_virtl_acct_ind}\n- ccrm_eltr_bill_sign: {ccrm_eltr_bill_sign}\n- ccrm_wbank_ind: {ccrm_wbank_ind}\n- ccrm_osf_cust_ind: {ccrm_osf_cust_ind}\n- ccrm_bill_pool_sign: {ccrm_bill_pool_sign}\n- ccrm_osa_non_resident_ind: {ccrm_osa_non_resident_ind}\n- ccrm_fin_org_cust_ind: {ccrm_fin_org_cust_ind}\n- ccrm_curr_q_loan_sign: {ccrm_curr_q_loan_sign}\n- ccrm_curr_y_loan_sign: {ccrm_curr_y_loan_sign}\n- ccrm_onsheet_cre_sign: {ccrm_onsheet_cre_sign}\n- ccrm_last_third_loan_sign: {ccrm_last_third_loan_sign}\n- ccrm_eff_agtpay_sign: {ccrm_eff_agtpay_sign}\n- ccrm_pos_acq_sign: {ccrm_pos_acq_sign}\n- ccrm_nra_cust_ind: {ccrm_nra_cust_ind}\n- ccrm_corp_annuit_sign: {ccrm_corp_annuit_sign}\n- ccrm_aml_level_cd: {ccrm_aml_level_cd}\n- ccrm_online_bat_sign: {ccrm_online_bat_sign}\n- ccrm_basic_acct_sign: {ccrm_basic_acct_sign}\n- ccrm_online_fin_sign: {ccrm_online_fin_sign}\n- ccrm_sc_core_cust_sign: {ccrm_sc_core_cust_sign}\n- ccrm_sc_upper_cust_sign: {ccrm_sc_upper_cust_sign}\n- ccrm_sc_down_cust_sign: {ccrm_sc_down_cust_sign}\n- ccrm_head_strate_sign: {ccrm_head_strate_sign}\n- ccrm_cloud_supervise_sign: {ccrm_cloud_supervise_sign}\n- ccrm_multi_bank_sign: {ccrm_multi_bank_sign}\n- ccrm_eqm_cust_ind: {ccrm_eqm_cust_ind}\n- ccrm_eqx_cust_ind: {ccrm_eqx_cust_ind}\n- ccrm_debt_fund_cust_ind: {ccrm_debt_fund_cust_ind}\n- ccrm_secu_cust_ind: {ccrm_secu_cust_ind}\n- ccrm_car_sc_cust_ind: {ccrm_car_sc_cust_ind}\n- ccrm_branch_strate_sign: {ccrm_branch_strate_sign}\n- ccrm_nude_loan_sign: {ccrm_nude_loan_sign}\n- ccrm_fta_cust_ind: {ccrm_fta_cust_ind}\n- ccrm_cloud_multi_bank_sign: {ccrm_cloud_multi_bank_sign}\n- ccrm_nbank_annu_fee_sign: {ccrm_nbank_annu_fee_sign}\n- ccrm_mbank_annu_fee_sign: {ccrm_mbank_annu_fee_sign}\n- ccrm_credit_cust_ind: {ccrm_credit_cust_ind}\n- ccrm_ph_sm_cust_ind: {ccrm_ph_sm_cust_ind}\n- ccrm_tech_cust_ind: {ccrm_tech_cust_ind}\n- ccrm_tech_fin_cust_ind: {ccrm_tech_fin_cust_ind}\n- ctb_tp_cd: {ctb_tp_cd}\n- ctb_tp_cd_desc: {ctb_tp_cd_desc}\n- open_dt: {open_dt}\n- credit_level: {credit_level}\n- deposit_amt: {deposit_amt}\n- fin_amt: {fin_amt}\n- balance: {balance}\n- employee_number: {employee_number}\n- admin_zone_tp_cd: {admin_zone_tp_cd}\n- economic_region: {economic_region}\n- economic_region_desc: {economic_region_desc}\n- region_tp_cd: {region_tp_cd}\n- region_tp_cd_desc: {region_tp_cd_desc}\n- hierarchy_tp_cd: {hierarchy_tp_cd}\n- hierarchy_tp_cd_desc: {hierarchy_tp_cd_desc}\n- ecif_fx_risk_level: {ecif_fx_risk_level}\n- ecif_fx_risk_level_desc: {ecif_fx_risk_level_desc}\n- ecif_cro_bor_risk: {ecif_cro_bor_risk}\n- ecif_cro_bor_risk_desc: {ecif_cro_bor_risk_desc}\n- ecif_london_open_flag: {ecif_london_open_flag}\n- ecif_hk_open_flag: {ecif_hk_open_flag}\n- ecif_singapore_open_flag: {ecif_singapore_open_flag}\n- ecif_other_open_flag: {ecif_other_open_flag}\n- ecif_overseas_open_flag: {ecif_overseas_open_flag}\n- branchorgkey: {branchorgkey}\n- etl_dt: {etl_dt}\n- enterprisebelong: {enterprisebelong}\n- enterprisebelong_desc: {enterprisebelong_desc}\n- benif_name: {benif_name}\n- benif_cust_id: {benif_cust_id}\n- ccrm_fin_cust_ind: {ccrm_fin_cust_ind}\n- norm_acct_num: {norm_acct_num}\n- withbalance_acct_num: {withbalance_acct_num}\n- freeze_acct_num: {freeze_acct_num}\n- ccrm_newvalue_ind: {ccrm_newvalue_ind}\n- originnominalsum: {originnominalsum}\n- originexposuresum: {originexposuresum}\n- suboccupynominalsum: {suboccupynominalsum}\n- suboccupyexposuresum: {suboccupyexposuresum}\n- ccms_sm_ind: {ccms_sm_ind}\n- ccms_mse_ind: {ccms_mse_ind}\n- ccms_ty_ind: {ccms_ty_ind}\n- ccms_nchn_ind: {ccms_nchn_ind}\n- risk_quotas: {risk_quotas}\n- asset_scale: {asset_scale}\n- br_1st: {br_1st}\n- technology_fin_loan_lab: {technology_fin_loan_lab}\n- inclusive_fin_loan_lab: {inclusive_fin_loan_lab}\n- supplychain_fin_loan_lab: {supplychain_fin_loan_lab}\n- crossborder_fin_loan_lab: {crossborder_fin_loan_lab}\n- asset_fin_loan_lab: {asset_fin_loan_lab}\n- green_loan_lab: {green_loan_lab}\n- serialno: {serialno}\n- customerid: {customerid}\n- industrytype: {industrytype}\n- privateinfo: {privateinfo}\n- creditexposure: {creditexposure}\n- creditedate: {creditedate}\n- irscreditlevel: {irscreditlevel}\n- precustomerype: {precustomerype}\n- curcustomertype: {curcustomertype}\n- outcustomertype: {outcustomertype}\n- riskcustomer: {riskcustomer}\n- irscreditlevelchange: {irscreditlevelchange}\n- customerbelongchange: {customerbelongchange}\n- societyriskchange: {societyriskchange}\n- otherinfo: {otherinfo}\n- preserialno: {preserialno}\n- initdate: {initdate}\n- groupriskinfo: {groupriskinfo}\n- currentyear: {currentyear}\n- currentindustry: {currentindustry}\n- currentindustrytype: {currentindustrytype}\n- lastyear: {lastyear}\n- lastindustry: {lastindustry}\n- lastindustrytype: {lastindustrytype}\n- sellinfo: {sellinfo}\n- noincident: {noincident}\n- checkresult: {checkresult}\n- customer_id: {customer_id}\n- custname: {custname}\n- risk_desc: {risk_desc}\n- ruleid: {ruleid}\n- rule_type: {rule_type}\n- snapshot: {snapshot}\n- pt_dt: {pt_dt}\n- label: {label}\n\n{data_report}",
+            "optimized_content": "你是一位具备金融风控专业知识的智能分析师，擅长结合企业定性及定量的指标数据对企业违约风险进行评估。\n\n**任务**\n请依据提供的【企业指标数据报告】，严格遵循以下【风险分析框架】和【分析流程】，对该企业在未来3个月内的违约风险进行综合判断，并输出最终结论。\n\n**风险分析框架**\n1.  **企业经营稳定性分析**：评估企业持续经营和基础偿债能力。\n    *   **企业属性与存续状态**：核查企业法律状态（{business_st_tp_cd_desc}）、客户状态（{client_st_tp_cd_desc}）、是否被列为风险客户（{riskcustomer}）及营业执照有效期（{licence_end_dt}）。\n    *   **行业与经营基本面**：分析所属行业（{industrykey_desc}）、企业规模（通过{employee_number}、{asset_scale}、{enrol_fund_amt}等侧面判断）、注册时间（{cust_regdate}）判断经营历史。\n    *   **现金流与收支状况**：重点分析存款余额（{deposit_amt}）、表内外融资总额（{fin_amt}、{sem_off_bal}）、账户活跃度（{withbalance_acct_num}）及冻结账户情况（{freeze_acct_num}），作为现金流的代理指标。关注是否为结算客户（{ccrm_corp_settle_sign}）或拥有基础账户（{ccrm_basic_acct_sign}）。\n\n2.  **企业债务与流动性风险分析**：评估债务负担和短期偿债压力。\n    *   **债务水平与结构**：分析授信总额（{creditamt}）、已用信（{used_creditamt}）、信用风险暴露（{creditexposure}）、表内外风险敞口（{originexposuresum}、{suboccupyexposuresum}）。结合{balance}（或{sem_bal_sum}）判断债务杠杆。\n    *   **流动性状况**：检查信用等级（{credit_level}、{irscreditlevel}）、近期贷款状态（{ccrm_curr_q_loan_sign}、{ccrm_curr_y_loan_sign}）、是否存在裸贷（{sem_nude_loan_sign}、{ccrm_nude_loan_sign}）、展期（{sem_extension_loan}）或不良标签（{sem_bad_loan_sign}）。\n    *   **交叉验证**：若{used_creditamt}高但{deposit_amt}极低，或{creditamt}大幅高于{asset_scale}表征的资产规模，则提示过度举债风险。\n\n3.  **其他风险信号分析**：整合内外部预警信息。\n    *   **内部评级与模型评分**：依据行内信用评级（{credit_level}）、IRS评级（{irscreditlevel}）及其变化（{irscreditlevelchange}）、ECIF风险等级（{ecif_cro_bor_risk_desc}）、反洗钱等级（{ccrm_aml_level_cd}）进行判断。\n    *   **负面预警标签**：识别是否存在失信（{sem_discredit_sig}）、欠息（{sem_h_oweinterest}）、逾期（{sem_h_overdue_label}）、高风险客户（{sem_h_high_level}）等负面信号。\n    *   **外部与关联风险**：关注集团客户标识（{is_group_cust}）及集团风险信息（{groupriskinfo}）、是否为关联方（{assoc_party_id}）以及社会风险变化（{societyriskchange}）。\n\n**分析流程与强制约束**\n1.  **分步执行**：请严格按上述框架的1、2、3顺序进行分析，每一步需引用具体特征字段（如：根据{client_st_tp_cd_desc}显示...）并形成中间判断。\n2.  **双向验证机制**：当关键结论存在矛盾时（例如：{credit_level}良好但{sem_discredit_sig}为“是”），必须启动二次核查，列出矛盾点并依据数据可靠性或更严重的负面信号进行裁决。\n3.  **事实与推测分离**：所有分析必须基于提供的特征值。将直接从数据中读取的信息（如“{sem_bad_loan_sign}为‘是’”）与基于此的推断（如“表明存在资产质量问题”）明确区分。\n4.  **现金流特别关注**：在分析中，必须将对{deposit_amt}、{withbalance_acct_num}、{freeze_acct_num}、{ccrm_corp_settle_sign}等现金流相关指标的评估作为经营稳定性的核心环节。\n\n**输出要求**\n完成上述分析后，请进行综合评估：\n*   如果认为该企业在未来3个月内**不会违约**，请最终输出：**否**\n*   如果认为该企业在未来3个月内**存在违约风险**，请最终输出：**是**\n\n请直接输出最终结论“是”或“否”，不要包含任何其他分析过程、解释或格式。\n\n**待分析企业数据**\n【企业指标数据报告】\nparty_id: {party_id}\nparty_chn_name: {party_chn_name}\n... (此处完整插入所有提供的待分析特征槽位列表，格式为“字段名: {字段名}”)\nlabel: {label}\n{data_report}",
+            "metadata": {
+                "rules": [
+                    "content_logic"
+                ],
+                "opinions": [
+                    "增加对现金流指标的关注"
+                ],
+                "timestamp": "2026-01-31T14:07:33.849423"
+            },
+            "timestamp": "2026-01-31T14:07:33.849423"
+        },
+        {
+            "id": "v_7",
+            "original_id": "default_risk",
+            "original_content": "【角色】\n您是一位具备金融风控专业知识的智能分析师，擅长结合企业定性及定量的指标数据对企业违约风险进行评估。\n\n【任务指令】\n请依据下方的【风险分析框架】和输入中提供的【企业指标数据报告】，按以下步骤对该企业信用风险进行综合判断：\n1. 依据【风险分析框架】对企业经营、债务、信用等维度进行分析；\n2. 通过指标间的交叉验证，判断是否存在框架未覆盖的风险点；\n3. 综合评估企业在未来3个月内的违约风险。\n\n【风险分析框架】\n（1）企业经营稳定性：结合企业属性、行业及收支流水，判断经营是否良好及具备偿债能力。\n（2）企业债务和流动性：结合短借长投、债务结构，判断是否过度举债。\n（3）其它风险信号：关注机器学习评分、行内评级及外部征信数据。\n\n【强制约束】\n1. 必须建立双向验证机制：当关键信号与指标数据矛盾时，需启动二次核查；\n2. 严格区分事实指标与推测结论。\n\n【输出要求】\n根据以上分析，如果认为该企业在未来3个月内不会违约，请输出“否”；如果存在违约风险，请输出“是”。请直接输出结果，不要包含其他分析过程。\n\n【企业指标数据报告】\n{data_report}",
+            "optimized_content": "角色：您是一位具备深厚金融风控专业知识的智能分析师，精通企业信用风险评估，擅长整合定性及定量指标进行综合研判。\n\n任务：请依据提供的【企业指标数据报告】，严格遵循以下【风险分析框架】与【强制约束】，对该企业在未来3个月内的违约风险进行系统性评估，并输出最终判断。\n\n**风险分析框架**\n1.  **企业经营稳定性分析**：评估企业持续经营与基础偿债能力。\n    *   **企业基本面**：分析企业性质（{company_type_cd_desc}）、组织形式（{org_form_cd_desc}）、行业（{industrykey_desc}）及经营状态（{business_st_tp_cd_desc}）。关注注册信息（{cust_regdate}、{reg_area}）与实控人信息（{actual_ctl_person1}）。\n    *   **财务与规模信号**：结合注册资本（{enrol_fund_amt}）、资产规模（{asset_scale}）、员工数（{employee_number}）及账户余额（{balance}）、存款（{deposit_amt}）等，判断经营实力。\n    *   **现金流与交易活跃度**：通过收支流水相关指标（如{norm_acct_num}、{withbalance_acct_num}）及客户关系管理（CCRM）标志（如{ccrm_corp_settle_sign}、{ccrm_basic_acct_sign}）交叉验证经营活跃度。\n\n2.  **企业债务与流动性风险分析**：评估企业债务负担与短期偿债压力。\n    *   **债务水平**：分析授信总额（{creditamt}）、已用信（{used_creditamt}）、信贷余额（{sem_bal_sum}）及表内外风险暴露（{sem_on_bal}、{sem_off_bal}、{originexposuresum}）。\n    *   **债务结构**：关注短借长投迹象，检查债务类型分布（如{sem_lead_manag_bal}、{sem_fin_bal}）及集团关联融资（{group_cust_ind}、{assoc_party_id}）。\n    *   **流动性状况**：结合信用等级（{credit_level}、{irscreditlevel}）、风险评级（{ecif_cro_bor_risk}）及特定风险标志（如{sem_overdue_label}、{sem_nude_loan_sign}）判断流动性紧张程度。\n\n3.  **其他关键风险信号分析**：识别框架外的潜在风险点。\n    *   **内部评级与模型评分**：重点关注内部信用评级（{credit_level}）、机器学习风险评分（{risk_quotas}）及ECIF风险等级（{ecif_fx_risk_level}）的变化（{irscreditlevelchange}）。\n    *   **负面与预警信号**：核查是否存在违约、逾期、失信记录（{sem_discredit_sig}、{sem_bad_loan_sign}）、涉诉风险（{riskcustomer}）以及监管处罚（{safe_code_desc}）等。\n    *   **外部征信与关联风险**：审视集团风险（{groupriskinfo}）、行业风险（{currentindustrytype}）及外部征信查询标志（{ccrm_nbank_qry_sign}）。\n\n**强制约束**\n1.  **双向验证机制**：当关键结论（如经营良好）与负面指标（如{sem_h_oweinterest}或{balance}极低）矛盾时，必须启动二次核查，引用具体矛盾字段进行说明。\n2.  **事实与推测分离**：所有分析必须基于报告中的具体指标值（如{creditamt}=100万），结论需明确标注为基于数据的“推断”。不得捏造报告中不存在的信息。\n\n**输出要求**\n请基于上述系统性分析，给出最终判断：\n*   若综合评估认为该企业在未来3个月内**不会违约**，请直接输出：**否**\n*   若综合评估认为该企业**存在违约风险**，请直接输出：**是**\n\n**企业指标数据报告**\n{data_report}",
+            "metadata": {
+                "rules": [
+                    "style_prof"
+                ],
+                "opinions": [],
+                "timestamp": "2026-01-31T15:22:29.075283"
+            },
+            "timestamp": "2026-01-31T15:22:29.075283"
+        }
+    ],
+    "feature_maps": [
+        {
+            "en_name": "party_id",
+            "zh_name": "party_id"
+        },
+        {
+            "en_name": "party_chn_name",
+            "zh_name": "party_chn_name"
+        },
+        {
+            "en_name": "party_eng_name",
+            "zh_name": "party_eng_name"
+        },
+        {
+            "en_name": "company_type_cd",
+            "zh_name": "company_type_cd"
+        },
+        {
+            "en_name": "company_type_cd_desc",
+            "zh_name": "company_type_cd_desc"
+        },
+        {
+            "en_name": "scopeelec",
+            "zh_name": "scopeelec"
+        },
+        {
+            "en_name": "scopeelec_desc",
+            "zh_name": "scopeelec_desc"
+        },
+        {
+            "en_name": "scope",
+            "zh_name": "scope"
+        },
+        {
+            "en_name": "scope_desc",
+            "zh_name": "scope_desc"
+        },
+        {
+            "en_name": "org_form_cd",
+            "zh_name": "org_form_cd"
+        },
+        {
+            "en_name": "org_form_cd_desc",
+            "zh_name": "org_form_cd_desc"
+        },
+        {
+            "en_name": "party_cat_cd",
+            "zh_name": "party_cat_cd"
+        },
+        {
+            "en_name": "party_cat_cd_desc",
+            "zh_name": "party_cat_cd_desc"
+        },
+        {
+            "en_name": "src_private",
+            "zh_name": "src_private"
+        },
+        {
+            "en_name": "src_private_desc",
+            "zh_name": "src_private_desc"
+        },
+        {
+            "en_name": "org_tp_cd",
+            "zh_name": "org_tp_cd"
+        },
+        {
+            "en_name": "org_tp_cd_desc",
+            "zh_name": "org_tp_cd_desc"
+        },
+        {
+            "en_name": "ownership_tp_cd",
+            "zh_name": "ownership_tp_cd"
+        },
+        {
+            "en_name": "ownership_tp_cd_desc",
+            "zh_name": "ownership_tp_cd_desc"
+        },
+        {
+            "en_name": "tax_qualif",
+            "zh_name": "tax_qualif"
+        },
+        {
+            "en_name": "tax_qualif_desc",
+            "zh_name": "tax_qualif_desc"
+        },
+        {
+            "en_name": "safe_code",
+            "zh_name": "safe_code"
+        },
+        {
+            "en_name": "safe_code_desc",
+            "zh_name": "safe_code_desc"
+        },
+        {
+            "en_name": "country_cd_desc",
+            "zh_name": "country_cd_desc"
+        },
+        {
+            "en_name": "reg_id",
+            "zh_name": "reg_id"
+        },
+        {
+            "en_name": "industrykey",
+            "zh_name": "industrykey"
+        },
+        {
+            "en_name": "industrykey_desc",
+            "zh_name": "industrykey_desc"
+        },
+        {
+            "en_name": "business_st_tp_cd",
+            "zh_name": "business_st_tp_cd"
+        },
+        {
+            "en_name": "business_st_tp_cd_desc",
+            "zh_name": "business_st_tp_cd_desc"
+        },
+        {
+            "en_name": "corporation_status",
+            "zh_name": "corporation_status"
+        },
+        {
+            "en_name": "client_st_tp_cd",
+            "zh_name": "client_st_tp_cd"
+        },
+        {
+            "en_name": "client_st_tp_cd_desc",
+            "zh_name": "client_st_tp_cd_desc"
+        },
+        {
+            "en_name": "cust_regdate",
+            "zh_name": "cust_regdate"
+        },
+        {
+            "en_name": "enrol_fund_amt",
+            "zh_name": "enrol_fund_amt"
+        },
+        {
+            "en_name": "enrol_fund_currency",
+            "zh_name": "enrol_fund_currency"
+        },
+        {
+            "en_name": "reg_area",
+            "zh_name": "reg_area"
+        },
+        {
+            "en_name": "reg_addr",
+            "zh_name": "reg_addr"
+        },
+        {
+            "en_name": "office_addr",
+            "zh_name": "office_addr"
+        },
+        {
+            "en_name": "contact_name",
+            "zh_name": "contact_name"
+        },
+        {
+            "en_name": "linker_tel",
+            "zh_name": "linker_tel"
+        },
+        {
+            "en_name": "iden_no",
+            "zh_name": "iden_no"
+        },
+        {
+            "en_name": "org_cd_iden_eff_dt",
+            "zh_name": "org_cd_iden_eff_dt"
+        },
+        {
+            "en_name": "org_cd_no",
+            "zh_name": "org_cd_no"
+        },
+        {
+            "en_name": "business_licence",
+            "zh_name": "business_licence"
+        },
+        {
+            "en_name": "biz_licence_start_dt",
+            "zh_name": "biz_licence_start_dt"
+        },
+        {
+            "en_name": "licence_end_dt",
+            "zh_name": "licence_end_dt"
+        },
+        {
+            "en_name": "license_year_check_dt",
+            "zh_name": "license_year_check_dt"
+        },
+        {
+            "en_name": "legal_obj",
+            "zh_name": "legal_obj"
+        },
+        {
+            "en_name": "legal_con_num",
+            "zh_name": "legal_con_num"
+        },
+        {
+            "en_name": "legal_country",
+            "zh_name": "legal_country"
+        },
+        {
+            "en_name": "corp_no",
+            "zh_name": "corp_no"
+        },
+        {
+            "en_name": "actual_ctl_person1",
+            "zh_name": "actual_ctl_person1"
+        },
+        {
+            "en_name": "actual_ctl_person2",
+            "zh_name": "actual_ctl_person2"
+        },
+        {
+            "en_name": "agent_name",
+            "zh_name": "agent_name"
+        },
+        {
+            "en_name": "accountant_name",
+            "zh_name": "accountant_name"
+        },
+        {
+            "en_name": "group_cust_ind",
+            "zh_name": "group_cust_ind"
+        },
+        {
+            "en_name": "is_group_cust",
+            "zh_name": "is_group_cust"
+        },
+        {
+            "en_name": "assoc_party_id",
+            "zh_name": "assoc_party_id"
+        },
+        {
+            "en_name": "group_name",
+            "zh_name": "group_name"
+        },
+        {
+            "en_name": "group_node_tp_cd",
+            "zh_name": "group_node_tp_cd"
+        },
+        {
+            "en_name": "creditflag",
+            "zh_name": "creditflag"
+        },
+        {
+            "en_name": "creditamt",
+            "zh_name": "creditamt"
+        },
+        {
+            "en_name": "used_creditamt",
+            "zh_name": "used_creditamt"
+        },
+        {
+            "en_name": "creditdate",
+            "zh_name": "creditdate"
+        },
+        {
+            "en_name": "balance_stock",
+            "zh_name": "balance_stock"
+        },
+        {
+            "en_name": "datasource",
+            "zh_name": "datasource"
+        },
+        {
+            "en_name": "is_inner_fin_cust",
+            "zh_name": "is_inner_fin_cust"
+        },
+        {
+            "en_name": "is_merch_id",
+            "zh_name": "is_merch_id"
+        },
+        {
+            "en_name": "smclient_exclusive",
+            "zh_name": "smclient_exclusive"
+        },
+        {
+            "en_name": "smclient_tp_cd",
+            "zh_name": "smclient_tp_cd"
+        },
+        {
+            "en_name": "smclient_tp_cd_desc",
+            "zh_name": "smclient_tp_cd_desc"
+        },
+        {
+            "en_name": "sem_status_dt",
+            "zh_name": "sem_status_dt"
+        },
+        {
+            "en_name": "sem_self_cust_sign",
+            "zh_name": "sem_self_cust_sign"
+        },
+        {
+            "en_name": "sem_islowrisk",
+            "zh_name": "sem_islowrisk"
+        },
+        {
+            "en_name": "sem_stock_equity",
+            "zh_name": "sem_stock_equity"
+        },
+        {
+            "en_name": "sem_commonly_guar",
+            "zh_name": "sem_commonly_guar"
+        },
+        {
+            "en_name": "sem_government",
+            "zh_name": "sem_government"
+        },
+        {
+            "en_name": "sem_over_int_cust",
+            "zh_name": "sem_over_int_cust"
+        },
+        {
+            "en_name": "sem_discredit_sig",
+            "zh_name": "sem_discredit_sig"
+        },
+        {
+            "en_name": "sem_advances_cust",
+            "zh_name": "sem_advances_cust"
+        },
+        {
+            "en_name": "sem_diff_places_cust",
+            "zh_name": "sem_diff_places_cust"
+        },
+        {
+            "en_name": "sem_extension_loan",
+            "zh_name": "sem_extension_loan"
+        },
+        {
+            "en_name": "sem_nude_loan_sign",
+            "zh_name": "sem_nude_loan_sign"
+        },
+        {
+            "en_name": "sem_bad_loan_sign",
+            "zh_name": "sem_bad_loan_sign"
+        },
+        {
+            "en_name": "sem_h_high_level",
+            "zh_name": "sem_h_high_level"
+        },
+        {
+            "en_name": "sem_h_oweinterest",
+            "zh_name": "sem_h_oweinterest"
+        },
+        {
+            "en_name": "sem_h_overdue_label",
+            "zh_name": "sem_h_overdue_label"
+        },
+        {
+            "en_name": "sem_interbank_cust",
+            "zh_name": "sem_interbank_cust"
+        },
+        {
+            "en_name": "sem_offshore_cust",
+            "zh_name": "sem_offshore_cust"
+        },
+        {
+            "en_name": "sem_on_bal",
+            "zh_name": "sem_on_bal"
+        },
+        {
+            "en_name": "sem_off_bal",
+            "zh_name": "sem_off_bal"
+        },
+        {
+            "en_name": "sem_off_ead",
+            "zh_name": "sem_off_ead"
+        },
+        {
+            "en_name": "sem_on_off_chou",
+            "zh_name": "sem_on_off_chou"
+        },
+        {
+            "en_name": "sem_on_offshore",
+            "zh_name": "sem_on_offshore"
+        },
+        {
+            "en_name": "sem_off_offshore",
+            "zh_name": "sem_off_offshore"
+        },
+        {
+            "en_name": "sem_off_offshore_ead",
+            "zh_name": "sem_off_offshore_ead"
+        },
+        {
+            "en_name": "sem_fin_bal_sum",
+            "zh_name": "sem_fin_bal_sum"
+        },
+        {
+            "en_name": "sem_fin_bal",
+            "zh_name": "sem_fin_bal"
+        },
+        {
+            "en_name": "sem_ass_man_fin",
+            "zh_name": "sem_ass_man_fin"
+        },
+        {
+            "en_name": "sem_self_bal_sum",
+            "zh_name": "sem_self_bal_sum"
+        },
+        {
+            "en_name": "sem_self_support",
+            "zh_name": "sem_self_support"
+        },
+        {
+            "en_name": "sem_self_bond_bal",
+            "zh_name": "sem_self_bond_bal"
+        },
+        {
+            "en_name": "sem_sub_bal_sum",
+            "zh_name": "sem_sub_bal_sum"
+        },
+        {
+            "en_name": "sem_lease_bal",
+            "zh_name": "sem_lease_bal"
+        },
+        {
+            "en_name": "sem_trust_bal",
+            "zh_name": "sem_trust_bal"
+        },
+        {
+            "en_name": "sem_village_bank_bal",
+            "zh_name": "sem_village_bank_bal"
+        },
+        {
+            "en_name": "sem_pud_bank_intl_bal",
+            "zh_name": "sem_pud_bank_intl_bal"
+        },
+        {
+            "en_name": "sem_pud_fin_bal",
+            "zh_name": "sem_pud_fin_bal"
+        },
+        {
+            "en_name": "sem_over_bran_bal",
+            "zh_name": "sem_over_bran_bal"
+        },
+        {
+            "en_name": "sem_bal_sum",
+            "zh_name": "sem_bal_sum"
+        },
+        {
+            "en_name": "sem_lead_manag_bal",
+            "zh_name": "sem_lead_manag_bal"
+        },
+        {
+            "en_name": "sem_no_lead_manag_bal",
+            "zh_name": "sem_no_lead_manag_bal"
+        },
+        {
+            "en_name": "sem_lead_manag_ratio",
+            "zh_name": "sem_lead_manag_ratio"
+        },
+        {
+            "en_name": "sem_no_lead_manag_ratio",
+            "zh_name": "sem_no_lead_manag_ratio"
+        },
+        {
+            "en_name": "sem_in_bran_bal",
+            "zh_name": "sem_in_bran_bal"
+        },
+        {
+            "en_name": "ccrm_grp_cust_level",
+            "zh_name": "ccrm_grp_cust_level"
+        },
+        {
+            "en_name": "ccrm_nbank_sign_ind",
+            "zh_name": "ccrm_nbank_sign_ind"
+        },
+        {
+            "en_name": "ccrm_nbank_qry_sign",
+            "zh_name": "ccrm_nbank_qry_sign"
+        },
+        {
+            "en_name": "ccrm_nbank_maj_sign",
+            "zh_name": "ccrm_nbank_maj_sign"
+        },
+        {
+            "en_name": "ccrm_boc_sign_ind",
+            "zh_name": "ccrm_boc_sign_ind"
+        },
+        {
+            "en_name": "ccrm_mbank_sign_ind",
+            "zh_name": "ccrm_mbank_sign_ind"
+        },
+        {
+            "en_name": "ccrm_mbank_maj_sign",
+            "zh_name": "ccrm_mbank_maj_sign"
+        },
+        {
+            "en_name": "ccrm_high_value_sign",
+            "zh_name": "ccrm_high_value_sign"
+        },
+        {
+            "en_name": "ccrm_psy_sign_ind",
+            "zh_name": "ccrm_psy_sign_ind"
+        },
+        {
+            "en_name": "ccrm_corp_settle_sign",
+            "zh_name": "ccrm_corp_settle_sign"
+        },
+        {
+            "en_name": "ccrm_cloud_bill_sign",
+            "zh_name": "ccrm_cloud_bill_sign"
+        },
+        {
+            "en_name": "ccrm_group_acct_sign",
+            "zh_name": "ccrm_group_acct_sign"
+        },
+        {
+            "en_name": "ccrm_auth_pay_sign",
+            "zh_name": "ccrm_auth_pay_sign"
+        },
+        {
+            "en_name": "ccrm_intlg_dpst_sign",
+            "zh_name": "ccrm_intlg_dpst_sign"
+        },
+        {
+            "en_name": "ccrm_cds_dpst_sign",
+            "zh_name": "ccrm_cds_dpst_sign"
+        },
+        {
+            "en_name": "ccrm_str_dpst_sign",
+            "zh_name": "ccrm_str_dpst_sign"
+        },
+        {
+            "en_name": "ccrm_rfp_cust_ind",
+            "zh_name": "ccrm_rfp_cust_ind"
+        },
+        {
+            "en_name": "ccrm_umfp_serv_ind",
+            "zh_name": "ccrm_umfp_serv_ind"
+        },
+        {
+            "en_name": "ccrm_fcfp_ind",
+            "zh_name": "ccrm_fcfp_ind"
+        },
+        {
+            "en_name": "ccrm_col_cust_ind",
+            "zh_name": "ccrm_col_cust_ind"
+        },
+        {
+            "en_name": "ccrm_agtpay_cust_ind",
+            "zh_name": "ccrm_agtpay_cust_ind"
+        },
+        {
+            "en_name": "ccrm_virtl_acct_ind",
+            "zh_name": "ccrm_virtl_acct_ind"
+        },
+        {
+            "en_name": "ccrm_eltr_bill_sign",
+            "zh_name": "ccrm_eltr_bill_sign"
+        },
+        {
+            "en_name": "ccrm_wbank_ind",
+            "zh_name": "ccrm_wbank_ind"
+        },
+        {
+            "en_name": "ccrm_osf_cust_ind",
+            "zh_name": "ccrm_osf_cust_ind"
+        },
+        {
+            "en_name": "ccrm_bill_pool_sign",
+            "zh_name": "ccrm_bill_pool_sign"
+        },
+        {
+            "en_name": "ccrm_osa_non_resident_ind",
+            "zh_name": "ccrm_osa_non_resident_ind"
+        },
+        {
+            "en_name": "ccrm_fin_org_cust_ind",
+            "zh_name": "ccrm_fin_org_cust_ind"
+        },
+        {
+            "en_name": "ccrm_curr_q_loan_sign",
+            "zh_name": "ccrm_curr_q_loan_sign"
+        },
+        {
+            "en_name": "ccrm_curr_y_loan_sign",
+            "zh_name": "ccrm_curr_y_loan_sign"
+        },
+        {
+            "en_name": "ccrm_onsheet_cre_sign",
+            "zh_name": "ccrm_onsheet_cre_sign"
+        },
+        {
+            "en_name": "ccrm_last_third_loan_sign",
+            "zh_name": "ccrm_last_third_loan_sign"
+        },
+        {
+            "en_name": "ccrm_eff_agtpay_sign",
+            "zh_name": "ccrm_eff_agtpay_sign"
+        },
+        {
+            "en_name": "ccrm_pos_acq_sign",
+            "zh_name": "ccrm_pos_acq_sign"
+        },
+        {
+            "en_name": "ccrm_nra_cust_ind",
+            "zh_name": "ccrm_nra_cust_ind"
+        },
+        {
+            "en_name": "ccrm_corp_annuit_sign",
+            "zh_name": "ccrm_corp_annuit_sign"
+        },
+        {
+            "en_name": "ccrm_aml_level_cd",
+            "zh_name": "ccrm_aml_level_cd"
+        },
+        {
+            "en_name": "ccrm_online_bat_sign",
+            "zh_name": "ccrm_online_bat_sign"
+        },
+        {
+            "en_name": "ccrm_basic_acct_sign",
+            "zh_name": "ccrm_basic_acct_sign"
+        },
+        {
+            "en_name": "ccrm_online_fin_sign",
+            "zh_name": "ccrm_online_fin_sign"
+        },
+        {
+            "en_name": "ccrm_sc_core_cust_sign",
+            "zh_name": "ccrm_sc_core_cust_sign"
+        },
+        {
+            "en_name": "ccrm_sc_upper_cust_sign",
+            "zh_name": "ccrm_sc_upper_cust_sign"
+        },
+        {
+            "en_name": "ccrm_sc_down_cust_sign",
+            "zh_name": "ccrm_sc_down_cust_sign"
+        },
+        {
+            "en_name": "ccrm_head_strate_sign",
+            "zh_name": "ccrm_head_strate_sign"
+        },
+        {
+            "en_name": "ccrm_cloud_supervise_sign",
+            "zh_name": "ccrm_cloud_supervise_sign"
+        },
+        {
+            "en_name": "ccrm_multi_bank_sign",
+            "zh_name": "ccrm_multi_bank_sign"
+        },
+        {
+            "en_name": "ccrm_eqm_cust_ind",
+            "zh_name": "ccrm_eqm_cust_ind"
+        },
+        {
+            "en_name": "ccrm_eqx_cust_ind",
+            "zh_name": "ccrm_eqx_cust_ind"
+        },
+        {
+            "en_name": "ccrm_debt_fund_cust_ind",
+            "zh_name": "ccrm_debt_fund_cust_ind"
+        },
+        {
+            "en_name": "ccrm_secu_cust_ind",
+            "zh_name": "ccrm_secu_cust_ind"
+        },
+        {
+            "en_name": "ccrm_car_sc_cust_ind",
+            "zh_name": "ccrm_car_sc_cust_ind"
+        },
+        {
+            "en_name": "ccrm_branch_strate_sign",
+            "zh_name": "ccrm_branch_strate_sign"
+        },
+        {
+            "en_name": "ccrm_nude_loan_sign",
+            "zh_name": "ccrm_nude_loan_sign"
+        },
+        {
+            "en_name": "ccrm_fta_cust_ind",
+            "zh_name": "ccrm_fta_cust_ind"
+        },
+        {
+            "en_name": "ccrm_cloud_multi_bank_sign",
+            "zh_name": "ccrm_cloud_multi_bank_sign"
+        },
+        {
+            "en_name": "ccrm_nbank_annu_fee_sign",
+            "zh_name": "ccrm_nbank_annu_fee_sign"
+        },
+        {
+            "en_name": "ccrm_mbank_annu_fee_sign",
+            "zh_name": "ccrm_mbank_annu_fee_sign"
+        },
+        {
+            "en_name": "ccrm_credit_cust_ind",
+            "zh_name": "ccrm_credit_cust_ind"
+        },
+        {
+            "en_name": "ccrm_ph_sm_cust_ind",
+            "zh_name": "ccrm_ph_sm_cust_ind"
+        },
+        {
+            "en_name": "ccrm_tech_cust_ind",
+            "zh_name": "ccrm_tech_cust_ind"
+        },
+        {
+            "en_name": "ccrm_tech_fin_cust_ind",
+            "zh_name": "ccrm_tech_fin_cust_ind"
+        },
+        {
+            "en_name": "ctb_tp_cd",
+            "zh_name": "ctb_tp_cd"
+        },
+        {
+            "en_name": "ctb_tp_cd_desc",
+            "zh_name": "ctb_tp_cd_desc"
+        },
+        {
+            "en_name": "open_dt",
+            "zh_name": "open_dt"
+        },
+        {
+            "en_name": "credit_level",
+            "zh_name": "credit_level"
+        },
+        {
+            "en_name": "deposit_amt",
+            "zh_name": "deposit_amt"
+        },
+        {
+            "en_name": "fin_amt",
+            "zh_name": "fin_amt"
+        },
+        {
+            "en_name": "balance",
+            "zh_name": "balance"
+        },
+        {
+            "en_name": "employee_number",
+            "zh_name": "employee_number"
+        },
+        {
+            "en_name": "admin_zone_tp_cd",
+            "zh_name": "admin_zone_tp_cd"
+        },
+        {
+            "en_name": "economic_region",
+            "zh_name": "economic_region"
+        },
+        {
+            "en_name": "economic_region_desc",
+            "zh_name": "economic_region_desc"
+        },
+        {
+            "en_name": "region_tp_cd",
+            "zh_name": "region_tp_cd"
+        },
+        {
+            "en_name": "region_tp_cd_desc",
+            "zh_name": "region_tp_cd_desc"
+        },
+        {
+            "en_name": "hierarchy_tp_cd",
+            "zh_name": "hierarchy_tp_cd"
+        },
+        {
+            "en_name": "hierarchy_tp_cd_desc",
+            "zh_name": "hierarchy_tp_cd_desc"
+        },
+        {
+            "en_name": "ecif_fx_risk_level",
+            "zh_name": "ecif_fx_risk_level"
+        },
+        {
+            "en_name": "ecif_fx_risk_level_desc",
+            "zh_name": "ecif_fx_risk_level_desc"
+        },
+        {
+            "en_name": "ecif_cro_bor_risk",
+            "zh_name": "ecif_cro_bor_risk"
+        },
+        {
+            "en_name": "ecif_cro_bor_risk_desc",
+            "zh_name": "ecif_cro_bor_risk_desc"
+        },
+        {
+            "en_name": "ecif_london_open_flag",
+            "zh_name": "ecif_london_open_flag"
+        },
+        {
+            "en_name": "ecif_hk_open_flag",
+            "zh_name": "ecif_hk_open_flag"
+        },
+        {
+            "en_name": "ecif_singapore_open_flag",
+            "zh_name": "ecif_singapore_open_flag"
+        },
+        {
+            "en_name": "ecif_other_open_flag",
+            "zh_name": "ecif_other_open_flag"
+        },
+        {
+            "en_name": "ecif_overseas_open_flag",
+            "zh_name": "ecif_overseas_open_flag"
+        },
+        {
+            "en_name": "branchorgkey",
+            "zh_name": "branchorgkey"
+        },
+        {
+            "en_name": "etl_dt",
+            "zh_name": "etl_dt"
+        },
+        {
+            "en_name": "enterprisebelong",
+            "zh_name": "enterprisebelong"
+        },
+        {
+            "en_name": "enterprisebelong_desc",
+            "zh_name": "enterprisebelong_desc"
+        },
+        {
+            "en_name": "benif_name",
+            "zh_name": "benif_name"
+        },
+        {
+            "en_name": "benif_cust_id",
+            "zh_name": "benif_cust_id"
+        },
+        {
+            "en_name": "ccrm_fin_cust_ind",
+            "zh_name": "ccrm_fin_cust_ind"
+        },
+        {
+            "en_name": "norm_acct_num",
+            "zh_name": "norm_acct_num"
+        },
+        {
+            "en_name": "withbalance_acct_num",
+            "zh_name": "withbalance_acct_num"
+        },
+        {
+            "en_name": "freeze_acct_num",
+            "zh_name": "freeze_acct_num"
+        },
+        {
+            "en_name": "ccrm_newvalue_ind",
+            "zh_name": "ccrm_newvalue_ind"
+        },
+        {
+            "en_name": "originnominalsum",
+            "zh_name": "originnominalsum"
+        },
+        {
+            "en_name": "originexposuresum",
+            "zh_name": "originexposuresum"
+        },
+        {
+            "en_name": "suboccupynominalsum",
+            "zh_name": "suboccupynominalsum"
+        },
+        {
+            "en_name": "suboccupyexposuresum",
+            "zh_name": "suboccupyexposuresum"
+        },
+        {
+            "en_name": "ccms_sm_ind",
+            "zh_name": "ccms_sm_ind"
+        },
+        {
+            "en_name": "ccms_mse_ind",
+            "zh_name": "ccms_mse_ind"
+        },
+        {
+            "en_name": "ccms_ty_ind",
+            "zh_name": "ccms_ty_ind"
+        },
+        {
+            "en_name": "ccms_nchn_ind",
+            "zh_name": "ccms_nchn_ind"
+        },
+        {
+            "en_name": "risk_quotas",
+            "zh_name": "risk_quotas"
+        },
+        {
+            "en_name": "asset_scale",
+            "zh_name": "asset_scale"
+        },
+        {
+            "en_name": "br_1st",
+            "zh_name": "br_1st"
+        },
+        {
+            "en_name": "technology_fin_loan_lab",
+            "zh_name": "technology_fin_loan_lab"
+        },
+        {
+            "en_name": "inclusive_fin_loan_lab",
+            "zh_name": "inclusive_fin_loan_lab"
+        },
+        {
+            "en_name": "supplychain_fin_loan_lab",
+            "zh_name": "supplychain_fin_loan_lab"
+        },
+        {
+            "en_name": "crossborder_fin_loan_lab",
+            "zh_name": "crossborder_fin_loan_lab"
+        },
+        {
+            "en_name": "asset_fin_loan_lab",
+            "zh_name": "asset_fin_loan_lab"
+        },
+        {
+            "en_name": "green_loan_lab",
+            "zh_name": "green_loan_lab"
+        },
+        {
+            "en_name": "serialno",
+            "zh_name": "serialno"
+        },
+        {
+            "en_name": "customerid",
+            "zh_name": "customerid"
+        },
+        {
+            "en_name": "industrytype",
+            "zh_name": "industrytype"
+        },
+        {
+            "en_name": "privateinfo",
+            "zh_name": "privateinfo"
+        },
+        {
+            "en_name": "creditexposure",
+            "zh_name": "creditexposure"
+        },
+        {
+            "en_name": "creditedate",
+            "zh_name": "creditedate"
+        },
+        {
+            "en_name": "irscreditlevel",
+            "zh_name": "irscreditlevel"
+        },
+        {
+            "en_name": "precustomerype",
+            "zh_name": "precustomerype"
+        },
+        {
+            "en_name": "curcustomertype",
+            "zh_name": "curcustomertype"
+        },
+        {
+            "en_name": "outcustomertype",
+            "zh_name": "outcustomertype"
+        },
+        {
+            "en_name": "riskcustomer",
+            "zh_name": "riskcustomer"
+        },
+        {
+            "en_name": "irscreditlevelchange",
+            "zh_name": "irscreditlevelchange"
+        },
+        {
+            "en_name": "customerbelongchange",
+            "zh_name": "customerbelongchange"
+        },
+        {
+            "en_name": "societyriskchange",
+            "zh_name": "societyriskchange"
+        },
+        {
+            "en_name": "otherinfo",
+            "zh_name": "otherinfo"
+        },
+        {
+            "en_name": "preserialno",
+            "zh_name": "preserialno"
+        },
+        {
+            "en_name": "initdate",
+            "zh_name": "initdate"
+        },
+        {
+            "en_name": "groupriskinfo",
+            "zh_name": "groupriskinfo"
+        },
+        {
+            "en_name": "currentyear",
+            "zh_name": "currentyear"
+        },
+        {
+            "en_name": "currentindustry",
+            "zh_name": "currentindustry"
+        },
+        {
+            "en_name": "currentindustrytype",
+            "zh_name": "currentindustrytype"
+        },
+        {
+            "en_name": "lastyear",
+            "zh_name": "lastyear"
+        },
+        {
+            "en_name": "lastindustry",
+            "zh_name": "lastindustry"
+        },
+        {
+            "en_name": "lastindustrytype",
+            "zh_name": "lastindustrytype"
+        },
+        {
+            "en_name": "sellinfo",
+            "zh_name": "sellinfo"
+        },
+        {
+            "en_name": "noincident",
+            "zh_name": "noincident"
+        },
+        {
+            "en_name": "checkresult",
+            "zh_name": "checkresult"
+        },
+        {
+            "en_name": "customer_id",
+            "zh_name": "customer_id"
+        },
+        {
+            "en_name": "custname",
+            "zh_name": "custname"
+        },
+        {
+            "en_name": "risk_desc",
+            "zh_name": "risk_desc"
+        },
+        {
+            "en_name": "ruleid",
+            "zh_name": "ruleid"
+        },
+        {
+            "en_name": "rule_type",
+            "zh_name": "rule_type"
+        },
+        {
+            "en_name": "snapshot",
+            "zh_name": "snapshot"
+        },
+        {
+            "en_name": "pt_dt",
+            "zh_name": "pt_dt"
+        },
+        {
+            "en_name": "label",
+            "zh_name": "label"
         }
     ]
 }
